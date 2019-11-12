@@ -1,3 +1,5 @@
 <?php
 
-echo $_SERVER['REQUEST_URI'];
+define('URI',$_SERVER['REQUEST_URI']);
+
+echo URI;
