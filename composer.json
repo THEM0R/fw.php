@@ -1,0 +1,16 @@
+{
+    "name": "themor/fw.php",
+    "authors": [
+        {
+            "name": "Slavik Mor",
+            "email": "the.mor.ua@gmail.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "app\\": "app/",
+            "engine\\": "engine/"
+        }
+    }
+}
