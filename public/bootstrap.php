@@ -6,6 +6,4 @@ define('URI',$_SERVER['REQUEST_URI']);
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use engine\Router;
-
-Router::run();
+engine\Router::run();
