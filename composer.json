@@ -10,7 +10,8 @@
     "autoload": {
         "psr-4": {
             "app\\": "app/",
-            "engine\\": "engine/"
+            "engine\\": "engine/",
+            "mvc\\": "engine/mvc/"
         }
     }
 }

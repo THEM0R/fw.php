@@ -6,200 +6,230 @@ namespace engine;
 
 class Router
 {
-    /**
-     * @var $routes
-     * масив роутов
-     */
-    protected static $routes = [];
+  /**
+   * @var $routes
+   * масив роутов
+   */
+  protected static $routes = [];
 
-    /**
-     * @var $route
-     * масив текущего роута роута
-     */
-    protected static $route = [];
+  /**
+   * @var $route
+   * масив текущего роута роута
+   */
+  protected static $route = [];
 
-    protected static $Patterns = [
-        'int'  => '[0-9]+',
-        'str'  => '[a-zA-Z\.\-_%]+',
-        'all'  => '[a-zA-Z0-9\.\-_%]+'
-    ];
+  protected static $Patterns = [
+      'int' => '[0-9]+',
+      'str' => '[a-zA-Z\.\-_%]+',
+      'all' => '[a-zA-Z0-9\.\-_%]+'
+  ];
 
-    /**
-     * @param $pattern
-     * @param $route
-     */
-    public static function add($pattern, $route, $view = false)
-    {
-        if($pattern == ''){
+  public static function get($pattern, $route, $view = false)
+  {
 
-            $pattern = '(language:str)'.$pattern;
+    if (is_string($route)) {
 
-        }else{
+      if ($pattern == '') {
+        $pattern = '(language:str)' . $pattern;
+      } else {
+        $pattern = '(language:str)/' . $pattern;
+      }
 
-            $pattern = '(language:str)/'.$pattern;
-        }
+      if (strpos($route, ':') === false) {
+        self::$routes[$pattern] = [
+            'controller' => $route,
+            'view' => $view
+        ];
 
-        if( is_string($route) )
-        {
+      } else {
 
-            if(strpos($route, ':') === false)
-            {
-                self::$routes[$pattern] = [
-                    'controller' => $route,
-                    'view'       => $view
-                ];
+        $route = explode(':', $route);
 
-            }else{
+        self::$routes[$pattern] = [
+            'controller' => $route[0],
+            'action' => $route[1],
+            'view' => $view
+        ];
 
-                $route = explode(':', $route);
+      }
 
-                self::$routes[$pattern] = [
-                    'controller'    => $route[0],
-                    'action'        => $route[1],
-                    'view'          => $view
-                ];
+      self::$routes[$pattern] = [
+          'method' => 'GET'
+      ];
 
-            }
+    } // is_string
+  }
 
-        }
+  public static function post($pattern, $route, $view = false)
+  {
+
+    if (is_string($route)) {
+
+      if ($pattern == '') {
+        $pattern = '(language:str)' . $pattern;
+      } else {
+        $pattern = '(language:str)/' . $pattern;
+      }
+
+      if (strpos($route, ':') === false) {
+        self::$routes[$pattern] = [
+            'controller' => $route,
+            'view' => $view
+        ];
+
+      } else {
+
+        $route = explode(':', $route);
+
+        self::$routes[$pattern] = [
+            'controller' => $route[0],
+            'action' => $route[1],
+            'view' => $view
+        ];
+
+      }
+
+      self::$routes[$pattern] = [
+          'method' => 'POST'
+      ];
+
+    } // is_string
+  }
+
+  /**
+   * @param $pattern
+   * @param $route
+   */
+  public static function add($pattern, $route, $view = false)
+  {
+
+    if ($pattern == '') {
+
+      $pattern = '(language:str)' . $pattern;
+
+    } else {
+
+      $pattern = '(language:str)/' . $pattern;
+    }
+
+    if (is_string($route)) {
+
+      if (strpos($route, ':') === false) {
+        self::$routes[$pattern] = [
+            'controller' => $route,
+            'view' => $view
+        ];
+
+      } else {
+
+        $route = explode(':', $route);
+
+        self::$routes[$pattern] = [
+            'controller' => $route[0],
+            'action' => $route[1],
+            'view' => $view
+        ];
+
+      }
 
     }
 
-
-    /**
-     * @param $url
-     * @return bool
-     */
-    protected static function getRoute($url)
-    {
+  }
 
 
+  /**
+   * @param $url
+   * @return bool
+   */
+  protected static function getRoute($url)
+  {
 
-        foreach ( self::$routes as $pattern => $route )
-        {
-            pr1($url);
+    foreach (self::$routes as $pattern => $route) {
 
-            $PATTERN = '#^'. $pattern . '$#i';
-            $pattern = self::convertPattern( $PATTERN );
-            //
+      $pattern = self::convertPattern('#^' . $pattern . '$#i');
 
-
-
-            if( preg_match( $pattern, $url, $matches ) )
-            {
-
-                foreach ( $matches as $k => $v)
-                {
-                    if( is_string($k) )
-                    {
-                        $route[$k] = $v;
-                    }
-                }
-
-                if( isset($route['language']) ) {
-
-                    if (!in_array($route['language'], ['ua', 'ru'])) {
-                        Helper::notFound();
-                    }else{
-                        $_SESSION[LANG] = $route['language'];
-                    }
-
-                }else{
-                    Helper::notFound();
-                }
+      //pr1($url);
 
 
-                if( !isset($route['action']) )
-                {
-                    $route['action'] = 'index';
-                }
+      if (preg_match($pattern, $url, $matches)) {
 
 
 
-                $route['controller'] = Helper::upperCamelCase( $route['controller'] );
-                self::$route = $route;
-                return true;
-            }
+        foreach ($matches as $k => $v) {
+          if (is_string($k)) {
+            $route[$k] = $v;
+          }
         }
-        return false;
-    }
-
-    public static function Run($url)
-    {
 
 
-//        if( $url == false ){
+//        if (isset($route['language'])) {
 //
-//            //pr1($_SESSION[LANGUAGE]);
+//          if (!in_array($route['language'], ['ua', 'ru'])) {
+//            Helper::notFound();
+//          } else {
+//            $_SESSION[LANG] = $route['language'];
+//          }
 //
-//            Helper::redirect(DOMEN.'/'.$_SESSION[LANG]);
+//        } else {
+//          Helper::notFound();
 //        }
-//
-//
-//
-//        // if GET
-//        if( Helper::is_Get($url) ){
-//            $url = explode('&',$url)[0];
-//        }
 
 
-
-        //
-        if( self::getRoute($url) ){
-
-            pr1($url);
-
-            $controller = 'app\\controllers\\'. self::$route['controller'] . 'Controller';
-
-            if( class_exists($controller) ){
-
-                // модель
-                $model = 'app\\models\\' . self::$route['controller'] . 'Model';
-
-                if( class_exists($model) ){
-                    $modelObject = new $model( self::$route );
-                }else{
-                    $modelObject = false;
-                }
-
-                $ControllerObject = new $controller( $modelObject, self::$route );
-
-                $action = Helper::lowerCamelCase( self::$route['action'] ).'Action';
-
-                if( method_exists($ControllerObject, $action) ){
-
-                    $ControllerObject->$action( $modelObject, self::$route );
-
-                    $ControllerObject->getView();
-
-                }else{
-                    Helper::notFound();
-                }
-
-            }else{
-                Helper::notFound();
-            }
-
-        }else{
-            Helper::notFound();
-        }
-    }
-
-
-    protected static function convertPattern($pattern)
-    {
-
-        if(strpos($pattern, '(') === false)
-        {
-            return $pattern;
+        if (!isset($route['action'])) {
+          $route['action'] = 'index';
         }
 
-        return preg_replace_callback('#\((\w+):(\w+)\)#', ['self','replacePattern'], $pattern);
+
+        $route['controller'] = Helper::upperCamelCase($route['controller']);
+        self::$route = $route;
+        return true;
+      }
+    }
+    return false;
+  }
+
+  public static function Run($url)
+  {
+
+
+    if ($url == '') {
+      Helper::redirect(DOMEN . '/' . LANGUAGE);
     }
 
-    protected static function replacePattern($matches)
-    {
-        return '(?<'.$matches[1].'>'.strtr($matches[2], self::$Patterns ).')';
+
+//    // if GET
+//    if (Helper::is_Get($url)) {
+//      $url = explode('&', $url)[0];
+//    }
+
+
+    if (self::getRoute($url)) {
+
+      pr($_SERVER['REQUEST_METHOD']);
+
+      pr($url);
+
+      pr1(self::$route);
+
+    } else {
+      Helper::notFound();
     }
+  }
+
+
+  protected static function convertPattern($pattern)
+  {
+
+    if (strpos($pattern, '(') === false) {
+      return $pattern;
+    }
+
+    return preg_replace_callback('#\((\w+):(\w+)\)#', ['self', 'replacePattern'], $pattern);
+  }
+
+  protected static function replacePattern($matches)
+  {
+    return '(?<' . $matches[1] . '>' . strtr($matches[2], self::$Patterns) . ')';
+  }
 
 }
