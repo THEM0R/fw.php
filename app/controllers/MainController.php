@@ -14,8 +14,6 @@ class MainController extends AppController
 <input type='text' name='test1'>
 <input type='submit'>
 </form>";
-
-
         pr1($route);
 
     }
@@ -23,9 +21,6 @@ class MainController extends AppController
     public function testAction($model, $route)
     {
         pr($route);
-        pr($_POST);
-        pr1($_SERVER['REQUEST_METHOD']);
-
     }
 
 
