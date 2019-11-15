@@ -1,8 +1,6 @@
 <?php
 
 namespace mvc;
-use core\DB;
-use lib\App;
 
 abstract class Model
 {
@@ -28,21 +26,7 @@ abstract class Model
 
     public function __construct($route)
     {
-        //pr1(Language::$ru);
 
-        $this->rb = DB::instance();
-
-        // route
-        $this->route            = $route;
-
-        $this->controller       = $route['controller'];
-        $this->view             = $route['view'];
-
-        // theme
-        if(!$this->theme) $this->theme = THEME;
-
-        // unset optimize
-        unset($route);
     }
 
 

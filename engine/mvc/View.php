@@ -1,5 +1,6 @@
 <? namespace mvc;
 
+use engine\Helper;
 use lib\App;
 use lang\Language;
 
@@ -33,12 +34,14 @@ class View
     {
 
         $this->route        = $route;
-        $this->controller   = App::lowerCamelCase($route['controller']);
+        $this->controller   = Helper::lowerCamelCase($route['controller']);
         $this->theme        = $theme ?: THEME;
         $this->view         = $view;
-        $this->script       = App::$config['script'];
+        //$this->script       = Helper::$config['script'];
         $this->meta         = $meta;
         // code
+
+
 
         // unset optimize
         unset($route);
@@ -60,18 +63,18 @@ class View
         unset($script);
         unset($all);
 
-        if($this->view == false) App::NotFound();
+        if($this->view == false) Helper::NotFound();
 
         if(is_array($vars)) extract($vars);
 
         // unset optimize
         unset($vars);
 
-        $file_view = APP .'/views/'.$this->theme.'/'.App::lowerCamelCase($this->view).'.html';
+        $file_view = APP .'/views/'.$this->theme.'/'.Helper::lowerCamelCase($this->view).'.html';
 
         ob_start();
 
-        if( is_file($file_view) ){ require $file_view; }else{ App::NotFound(); }
+        if( is_file($file_view) ){ require $file_view; }else{ Helper::NotFound(); }
 
         // unset optimize
         unset($file_view);
@@ -88,7 +91,7 @@ class View
                 require $file_theme;
 
             }else{
-                App::NotFound();
+                Helper::NotFound();
             }
 
             // unset optimize
@@ -96,7 +99,7 @@ class View
 
         }else{
 
-            App::NotFound();
+            Helper::NotFound();
         }
     }
 

@@ -2,25 +2,29 @@
 
 namespace app\controllers;
 
-use lib\App;
+use engine\Helper;
 
 class MainController extends AppController
 {
 
-    public $title = ' Приватне Підприємство МЕТАЛІК-PLUS';
-
-
-
     public function indexAction($model, $route)
     {
 
-        $title = 'МЕТАЛІК-PLUS |'.$this->title;
+        echo "<form method='post' action='http://fw.php/ua/posts1/test12'>
+<input type='text' name='test1'>
+<input type='submit'>
+</form>";
 
-        $description = '';
 
-        $this->meta($title,$description);
+        pr1($route);
 
-        $this->render(compact('description'));
+    }
+
+    public function testAction($model, $route)
+    {
+        pr($route);
+        pr($_POST);
+        pr1($_SERVER['REQUEST_METHOD']);
 
     }
 

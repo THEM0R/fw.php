@@ -2,10 +2,7 @@
 
 namespace mvc;
 
-use DateTime;
-use lang\Language;
-use core\DB;
-use lib\App;
+use engine\Helper;
 
 
 abstract class Controller
@@ -37,104 +34,41 @@ abstract class Controller
      */
     public $vars = null;
 
+    public function get_content_curl($url){
 
+        $ch = curl_init($url);
 
+        //curl_setopt( $ch, CURLOPT_FOLLOWLOCATION, true );
+        //curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
 
-    public $configs = [
+        // timeout
+        curl_setopt( $ch, CURLOPT_TIMEOUT, 9);
+        curl_setopt( $ch, CURLOPT_CONNECTTIMEOUT, 6);
 
-        'menu'  => [
-            1 => [
-                'url' => '',
-                'name' => 'Головна'
-            ],
-            2 => [
-                'url' => 'material',
-                'name' => 'Матеріали'
-            ],
-            3 => [
-                'url' => 'metal',
-                'name' => 'Металопрокат'
-            ],
-            4 => [
-                'url' => 'gallery',
-                'name' => 'Галерея'
-            ],
-            5 => [
-                'url' => 'about',
-                'name' => 'Про нас'
-            ],
-//            5 => [
-//                'url' => 'contact',
-//                'name' => 'Контакти'
-//            ],
-        ],
-        'sity' => [
+        //curl_setopt( $ch, CURLOPT_POSTFIELDS, ['postdata' => 'test1'] );
 
-            'Болехів',
-            'Бурштин',
-            'Галич',
-            'Городенка',
-            'Долина',
-            'Івано-Франківськ',
-            'Калуш',
-            'Коломия',
-            'Косів',
-            'Надвірна',
-            'Рогатин',
-            'Рожнятів',
-            'Тисмениця',
-            'Тлумач',
-            'Яремче',
+        $res = curl_exec($ch);
+        curl_close($ch);
 
-            'Сваричів',
-            'Перегінськ',
-        ],
-        'products'  => [
-
-            'блок-хаус',
-            'Профнастил',
-            'Євро-брус',
-            'Металочерепиця',
-            'Штахетник',
-            'Лист',
-
-            'Арматура',
-            'Квадрат',
-            'Круг',
-            'Труби',
-            'Труби водогазопровідні',
-            'Швелер',
-            'Кутник',
-            'Дріт',
-            'Смуга',
-            'Кладочна Сітка',
-            'Профільні Труби',
-            'Оцинковані Вироби',
-
-        ],
-        'description'  => 'Приватне підприємство «Металік-Плюс»<br><br>
-        займається виробництвом: блок-хаусу, евро-брусу, металочерепиці, профнастилу, 
-        <br>металоштахетника та аксесуарів для даху.
-        <br>виконуємо комплектацію стандартних та індивідуальних рохмірів.<br><br>
-        
-        Завод «Металік-Плюс» знаходиться в місті Калуш, Івано-Франківської області.
-        <br><br>Початок діяльності було покладено в 2007 році.<br>
-        
-        За 12 років свого існування фірма змогла завоювати довіру своїх клієнтів.
-        <br>«Металік-Плюс» знають і поважають в Україні!.<br><br>
-        
-        Швидкість виконання роботи, 
-        індевідуальний підхід та оптимальні ціни - це те,
-        <br>що робить продукцію заводу привабливою та вигідною для покупців!',
-    ];
+        return $res;
+    }
 
 
     public function __construct($model, $route)
     {
+
+
+        //pr1( $this->get_content_curl('http://fw.php/ua/post/test12') );
+
+
+
+
+        //pr($_SERVER['REQUEST_METHOD']);
+
         // route
         $this->route            = $route;
 
-        $this->controller       = App::lowerCamelCase($route['controller']);
+        $this->controller       = Helper::lowerCamelCase($route['controller']);
         $this->view             = $route['view'];
         // Language
 
@@ -195,39 +129,6 @@ abstract class Controller
 
         // unset optimize
         unset($vars);
-    }
-
-    public function Meta($title = null, $description = null, $keywords = null)
-    {
-        $this->meta['title'] = $title ?: META_TITLE;
-        $this->meta['keywords'] = $keywords ?: $this->keywords();
-        $this->meta['description'] = $description ?: $this->configs['description'];
-
-        // unset optimize
-        unset($title);
-        unset($keywords);
-        unset($description);
-    }
-
-    public function keywords(){
-
-        $string = null;
-
-        foreach ($this->configs['products'] as $tiem){
-            $string .= $tiem.',';
-        }
-
-        foreach ($this->configs['sity'] as $sity){
-
-            foreach ($this->configs['products'] as $tiem){
-                $string .= $sity.' '.$tiem.',';
-            }
-
-
-        }
-
-        return rtrim($string,',');
-
     }
 
 

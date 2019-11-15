@@ -1,12 +1,15 @@
 <?php
 use engine\Router;
+
+Router::post('(post:all)/(url:all)', 'Main:test');
+
 /* view */
-Router::add('(category:str)/(url:all)', 'view:index','view');
-Router::add('(category:str)/(url:all)/(action:str)', 'View');
+Router::get('(category:str)/(url:all)', 'view:index','view');
+Router::get('(category:str)/(url:all)/(action:str)', 'View');
 
 /* category */
-Router::add('(category:str)', 'category','category');
-Router::add('(category:str)/page/(page:int)', 'category');
+Router::get('(category:str)', 'category','category');
+Router::get('(category:str)/page/(page:int)', 'category');
 
 
 

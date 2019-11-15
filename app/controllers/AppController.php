@@ -1,7 +1,8 @@
 <?php
 
 namespace app\controllers;
-use mvc\Controller, lib\App;
+
+use mvc\Controller;
 
 class AppController extends Controller
 {
