@@ -21,7 +21,8 @@ class Router
   protected static $Patterns = [
       'int' => '[0-9]+',
       'str' => '[a-zA-Z\.\-_%]+',
-      'all' => '[a-zA-Z0-9\.\-_%]+'
+      'all' => '[a-zA-Z0-9\.\-_%]+',
+      'get' => '[a-zA-Z0-9\.\-_%=&]+'
   ];
 
   public static function get($pattern, $route, $view = false)
@@ -159,22 +160,16 @@ class Router
 
       if (strpos($url, '/') !== false) {
 
-        if (strpos($url, '/') === strlen(LANGUAGE)) {
-          // +
-          echo $url;
-        } else {
-          // -
-          //echo 'false';
+        if (strpos($url, '/') !== strlen(LANGUAGE)) {
           Helper::redirect(DOMEN . '/' . LANGUAGE . '/' . $url );
         }
-
       } else {
-        // -
-        //echo 'false -';
         Helper::redirect(DOMEN . '/' . LANGUAGE . '/' . $url );
       }
 
     }
+
+
 
 
     // if GET
@@ -183,6 +178,8 @@ class Router
 //                $url = explode('&', $url)[0];
 //            }
 //        }
+
+    //pr1($url);
 
     //pr3( self::getRoute($url) );
 
