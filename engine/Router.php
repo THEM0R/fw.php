@@ -164,7 +164,8 @@ class Router
           echo $url;
         } else {
           // -
-          echo 'false';
+          //echo 'false';
+          Helper::redirect(DOMEN . '/' . LANGUAGE . '/' . $url );
         }
 
       } else {
