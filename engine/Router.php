@@ -152,6 +152,10 @@ class Router
     }
 
 
+
+
+
+
     //pr(LANGUAGES[1]);
     //pr($url);
     //strlen(LANGUAGE);
@@ -169,8 +173,14 @@ class Router
 
     }
 
+    if ( strpos($url, '&') !== false | strpos($url, '=') !== false ) {
+
+      pr1($url);
+      Helper::redirect(DOMEN . '/' . LANGUAGE . '/methodget/' . $url );
+    }
 
 
+    //pr1($url);
 
     // if GET
 //        if (Helper::is_Get($url)) {
@@ -179,7 +189,7 @@ class Router
 //            }
 //        }
 
-    //pr1($url);
+
 
     //pr3( self::getRoute($url) );
 
