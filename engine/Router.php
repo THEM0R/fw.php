@@ -182,7 +182,9 @@ class Router
 
           if( strpos($url, 'methodget') === false ) {
 
-              pr($url);
+              if( !in_array(explode('/',$url)[1],LANGUAGES)){
+                  $url = explode('/',$url)[1];
+              }
 
               Helper::redirect(DOMEN  . '/methodget/' . $url);
 
