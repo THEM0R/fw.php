@@ -180,9 +180,11 @@ class Router
 
       if (strpos($url, '&') !== false | strpos($url, '=') !== false) {
 
-          if( strpos($url, 'methodget') !== false ) {
+          if( strpos($url, 'methodget') === false ) {
 
-              Helper::redirect(DOMEN . '/' . LANGUAGE . '/methodget/' . $url);
+              pr($url);
+
+              Helper::redirect(DOMEN  . '/methodget/' . $url);
 
           }
       }
