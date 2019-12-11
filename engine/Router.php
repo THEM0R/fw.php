@@ -145,21 +145,21 @@ class Router
   {
 
 
-    if ($url == '') {
+    /** якшо в $url пусто */
+    if ($url === '') {
       Helper::redirect(DOMEN . '/' . LANGUAGE);
     }
 
 
-    pr(LANGUAGES[1]);
+    //pr(LANGUAGES[1]);
+    //pr($url);
+    //strlen(LANGUAGE);
 
-
-//    pr3( strpos($url, '/') );
-
-    if ( $url !== 'ua') {
+    if( !in_array($url,LANGUAGES)){
 
       if (strpos($url, '/') !== false) {
 
-        if (strpos($url, '/') === 2) {
+        if (strpos($url, '/') === strlen(LANGUAGE)) {
           // +
           echo $url;
         } else {
@@ -169,12 +169,11 @@ class Router
 
       } else {
         // -
-        echo 'false -';
+        //echo 'false -';
+        Helper::redirect(DOMEN . '/' . LANGUAGE . '/' . $url );
       }
 
     }
-
-    exit;
 
 
     // if GET

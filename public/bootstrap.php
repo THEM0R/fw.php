@@ -19,7 +19,7 @@ define('LANGUAGES', [
     2 => 'ru'
 ]);
 
-define('LANGUAGE', LANGUAGES[1]);
+define('LANGUAGE', LANGUAGES[2]);
 
 
 
