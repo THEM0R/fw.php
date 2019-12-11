@@ -106,10 +106,12 @@ class Router
 
     foreach (self::$routes as $pattern => $route) {
 
+        //pr1($url);
 
       $pattern = self::convertPattern('#^' . $pattern . '$#i');
 
       if (preg_match($pattern, $url, $matches)) {
+
 
         foreach ($matches as $k => $v) {
           if (is_string($k)) {
@@ -157,7 +159,7 @@ class Router
 
 
     //pr(LANGUAGES[1]);
-    //pr($url);
+
     //strlen(LANGUAGE);
 
     if( !in_array($url,LANGUAGES)){
@@ -173,11 +175,19 @@ class Router
 
     }
 
-    if ( strpos($url, '&') !== false | strpos($url, '=') !== false ) {
+      //pr3(strpos($url, 'methodget'));
 
-      pr1($url);
-      Helper::redirect(DOMEN . '/' . LANGUAGE . '/methodget/' . $url );
-    }
+
+      if (strpos($url, '&') !== false | strpos($url, '=') !== false) {
+
+          if( strpos($url, 'methodget') !== false ) {
+
+              Helper::redirect(DOMEN . '/' . LANGUAGE . '/methodget/' . $url);
+
+          }
+      }
+
+
 
 
     //pr1($url);
