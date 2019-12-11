@@ -209,7 +209,11 @@ class Router
 
     if (self::getRoute($url)) {
 
-      pr1(self::$route);
+        pr($_SERVER);
+        pr(HTTP_REFERER);
+        pr1(self::$route);
+
+        // https://artkiev.com/blog/php-proxy-detected.htm
 
       if (self::$route['method']['name'] == $_SERVER['REQUEST_METHOD']) {
 

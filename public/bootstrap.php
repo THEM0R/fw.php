@@ -14,12 +14,22 @@ define('DOMEN', REQUEST.'://' . $_SERVER['HTTP_HOST']);
 
 define('THEME', 'default');
 
+// LANGUAGE
+
 define('LANGUAGES', [
     1 => 'ua',
     2 => 'ru'
 ]);
 
 define('LANGUAGE', LANGUAGES[2]);
+
+if(isset($_SERVER['HTTP_REFERER'])) {
+    define('HTTP_REFERER', $_SERVER['HTTP_REFERER']);
+}else{
+    define('HTTP_REFERER', 0);
+}
+
+define('HTTP_ACCEPT_LANGUAGE', $_SERVER['HTTP_ACCEPT_LANGUAGE']);
 
 
 
