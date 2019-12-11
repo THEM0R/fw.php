@@ -149,11 +149,32 @@ class Router
       Helper::redirect(DOMEN . '/' . LANGUAGE);
     }
 
-    pr1($url);
 
-    if (strpos($pattern, '(') === false) {
-      return $pattern;
+    pr(LANGUAGES[1]);
+
+
+//    pr3( strpos($url, '/') );
+
+    if ( $url !== 'ua') {
+
+      if (strpos($url, '/') !== false) {
+
+        if (strpos($url, '/') === 2) {
+          // +
+          echo $url;
+        } else {
+          // -
+          echo 'false';
+        }
+
+      } else {
+        // -
+        echo 'false -';
+      }
+
     }
+
+    exit;
 
 
     // if GET

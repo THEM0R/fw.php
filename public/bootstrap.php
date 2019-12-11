@@ -11,8 +11,15 @@ define('REQUEST', 'http');
 
 define('URI',rtrim($_SERVER['QUERY_STRING'], '/'));
 define('DOMEN', REQUEST.'://' . $_SERVER['HTTP_HOST']);
-define('LANGUAGE', 'ua');
+
 define('THEME', 'default');
+
+define('LANGUAGES', [
+    1 => 'ua',
+    2 => 'ru'
+]);
+
+define('LANGUAGE', LANGUAGES[1]);
 
 
 
