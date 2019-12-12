@@ -3,7 +3,7 @@ use engine\Router;
 
 Router::post('(post:all)/(url:all)', 'Main:test');
 
-Router::post('methodget/(get:get)', 'Main:get');
+Router::get('methodget/(get:get)', 'Main:get');
 
 /* view */
 Router::get('(category:str)/(url:all)', 'view:index','view');
@@ -17,4 +17,4 @@ Router::get('(category:str)/page/(page:int)', 'category');
 
 /* index */
 //Router::get('(get:get)', 'Main:get','main');
-Router::get('', 'Main','main');
+Router::get('?(get:get)?', 'Main','main');
