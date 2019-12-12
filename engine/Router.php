@@ -289,4 +289,30 @@ class Router
     return '(?<' . $matches[1] . '>' . strtr($matches[2], self::$Patterns) . ')';
   }
 
+  /**
+   * [en] get remote address
+   * [uk] отримати віддалену адресу
+   * @return array|false|mixed|string
+   */
+  protected static function getIp() {
+    if($_SERVER) {
+      if($_SERVER['HTTP_X_FORWARDED_FOR'])
+        $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+      elseif($_SERVER['HTTP_CLIENT_IP'])
+        $ip = $_SERVER['HTTP_CLIENT_IP'];
+      else
+        $ip = $_SERVER['REMOTE_ADDR'];
+    }
+    else {
+      if(getenv('HTTP_X_FORWARDED_FOR'))
+        $ip = getenv('HTTP_X_FORWARDED_FOR');
+      elseif(getenv('HTTP_CLIENT_IP'))
+        $ip = getenv('HTTP_CLIENT_IP');
+      else
+        $ip = getenv('REMOTE_ADDR');
+    }
+
+    return $ip;
+  }
+
 }
