@@ -17,4 +17,5 @@ Router::get('(category:str)/page/(page:int)', 'category');
 
 /* index */
 //Router::get('(get:get)', 'Main:get','main');
-Router::get('?(get:get)?', 'Main','main');
+//Router::get('?(get:get)?', 'Main','main');
+Router::get('', 'Main','main');

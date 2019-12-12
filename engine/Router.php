@@ -140,8 +140,6 @@ class Router
 
         $route['controller'] = Helper::upperCamelCase($route['controller']);
         self::$route = $route;
-
-        pr1($pattern);
         return true;
       }
     }
@@ -182,18 +180,18 @@ class Router
       //pr3(strpos($url, 'methodget'));
 
 
-//      if (strpos($url, '&') !== false | strpos($url, '=') !== false) {
-//
-//          if( strpos($url, 'methodget') === false ) {
-//
-//              if( !in_array(explode('/',$url)[1],LANGUAGES)){
-//                  $url = explode('/',$url)[1];
-//              }
-//
-//              Helper::redirect(DOMEN  . '/methodget/' . $url);
-//
-//          }
-//      }
+      if (strpos($url, '&') !== false | strpos($url, '=') !== false) {
+
+          if( strpos($url, 'methodget') === false ) {
+
+              if( !in_array(explode('/',$url)[1],LANGUAGES)){
+                  $url = explode('/',$url)[1];
+              }
+
+              Helper::redirect(DOMEN  . '/methodget/' . $url);
+
+          }
+      }
 
 
 
@@ -213,7 +211,7 @@ class Router
 
     if (self::getRoute($url)) {
 
-        pr($_SERVER);
+        //pr($_SERVER);
         pr(HTTP_REFERER);
         pr1(self::$route);
 
