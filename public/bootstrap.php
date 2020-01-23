@@ -33,7 +33,7 @@ if ($_SERVER) {
 
         if ($HAL === 'uk') {
             define('LANGUAGE', LANGUAGES[1]);
-        } elseif ($HAL === 'ru') {
+        } else {
             define('LANGUAGE', LANGUAGES[2]);
         }
     }
