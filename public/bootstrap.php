@@ -39,6 +39,8 @@ if ($_SERVER) {
     }
 }
 
+//pr($_SERVER['HTTP_ACCEPT_LANGUAGE']);
+
 
 if (isset($_SERVER['HTTP_REFERER'])) {
     define('HTTP_REFERER', $_SERVER['HTTP_REFERER']);
@@ -50,6 +52,8 @@ define('HTTP_ACCEPT_LANGUAGE', $_SERVER['HTTP_ACCEPT_LANGUAGE']);
 
 
 //echo URI;
+
+//pr1($_SERVER);
 
 
 engine\Router::Run();

@@ -200,7 +200,9 @@ class Router
 
 //            pr($_SERVER);
 //            pr(HTTP_REFERER);
-//            pr1(self::$route);
+            if( Helper::lowerCamelCase(self::$route['controller']) == 'main' ){
+
+            }
 
             // https://artkiev.com/blog/php-proxy-detected.htm
 
