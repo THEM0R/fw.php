@@ -160,16 +160,31 @@ class Router
 
     if (!in_array($url, LANGUAGES)) {
 
-      pr1($url);
+      if (in_array(substr($url, 0, 2), LANGUAGES)) {
+          $url = substr($url, 2);
+      }
+
+
 
       if (strpos($url, '/') !== false) {
 
         if (strpos($url, '/') !== strlen(LANGUAGE)) {
+
+          if(strpos($url, '/') == 0){
+            $url = substr($url, 1);
+          }
+          if(strpos($url, '&') == 0){
+            $url = substr($url, 1);
+          }
           Helper::redirect(DOMEN . '/' . LANGUAGE . '/' . $url);
         }
+
       } else {
+
         Helper::redirect(DOMEN . '/' . LANGUAGE . '/' . $url);
       }
+
+
 
     }
 
@@ -184,7 +199,7 @@ class Router
           $url = explode('/', $url)[1];
         }
 
-        pr1($url);
+        //pr1($url);
 
         Helper::redirect(DOMEN . '/method/' . $url);
 
