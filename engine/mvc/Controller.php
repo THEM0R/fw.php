@@ -67,7 +67,7 @@ abstract class Controller
     //pr($_SERVER['REQUEST_METHOD']);
 
 
-    pr1($route);
+    //pr1($route);
 
     // route
     $this->route = $route;

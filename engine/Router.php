@@ -156,37 +156,32 @@ class Router
       Helper::redirect(DOMEN . '/' . LANGUAGE);
     }
 
-
-
     if (!in_array($url, LANGUAGES)) {
-
-      if (in_array(substr($url, 0, 2), LANGUAGES)) {
-          $url = substr($url, 2);
-      }
-
 
 
       if (strpos($url, '/') !== false) {
 
         if (strpos($url, '/') !== strlen(LANGUAGE)) {
 
-          if(strpos($url, '/') == 0){
-            $url = substr($url, 1);
-          }
-          if(strpos($url, '&') == 0){
-            $url = substr($url, 1);
-          }
           Helper::redirect(DOMEN . '/' . LANGUAGE . '/' . $url);
         }
 
       } else {
 
+        if (in_array(substr($url, 0, 2), LANGUAGES)) {
+          $url = substr($url, 2);
+        }
+
+        if (strpos($url, '&') == 0) {
+          $url = substr($url, 1);
+        }
+
         Helper::redirect(DOMEN . '/' . LANGUAGE . '/' . $url);
       }
 
-
-
     }
+
+
 
 
     if (strpos($url, '&') !== false | strpos($url, '=') !== false) {
@@ -199,9 +194,7 @@ class Router
           $url = explode('/', $url)[1];
         }
 
-        //pr1($url);
-
-        Helper::redirect(DOMEN . '/method/' . $url);
+        Helper::redirect(DOMEN . '/method/' .'&'. $url);
 
       }
     }
@@ -225,14 +218,19 @@ class Router
 
       // https://artkiev.com/blog/php-proxy-detected.htm
 
+
+      // Убрать пустые элементы из массива
+      $r = array_diff($_GET, array());
+
+      pr1($r);
+
       if (self::$route['method']['name'] == $_SERVER['REQUEST_METHOD']) {
 
-        pr1($_GET);
-
         if (self::$route['method']['name'] == 'GET') {
-          self::$route['method']['data'] = $_GET;
+
+          self::$route['method']['data'] = array_diff($_GET, []);
         } else if (self::$route['method']['name'] == 'POST') {
-          self::$route['method']['data'] = $_POST;
+          self::$route['method']['data'] = array_diff($_POST, []);
         }
 
         $controller = 'app\\controllers\\' . self::$route['controller'] . 'Controller';
