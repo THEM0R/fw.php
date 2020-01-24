@@ -222,6 +222,8 @@ class Router
       // Убрать пустые элементы из массива
       $r = array_diff($_GET, array());
 
+
+
       pr1($r);
 
       if (self::$route['method']['name'] == $_SERVER['REQUEST_METHOD']) {
