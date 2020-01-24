@@ -220,19 +220,15 @@ class Router
 
 
       // Убрать пустые элементы из массива
-      $r = array_diff($_GET, array());
-
-
-
-      pr1($r);
+//      $r = array_diff($_GET, array());
 
       if (self::$route['method']['name'] == $_SERVER['REQUEST_METHOD']) {
 
         if (self::$route['method']['name'] == 'GET') {
 
-          self::$route['method']['data'] = array_diff($_GET, []);
+          self::$route['method']['data'] = Helper::array_clear($_GET);
         } else if (self::$route['method']['name'] == 'POST') {
-          self::$route['method']['data'] = array_diff($_POST, []);
+          self::$route['method']['data'] = Helper::array_clear($_POST);
         }
 
         $controller = 'app\\controllers\\' . self::$route['controller'] . 'Controller';
