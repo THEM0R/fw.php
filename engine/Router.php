@@ -36,6 +36,8 @@ class Router
         $pattern = '(language:str)/' . $pattern;
       }
 
+      $pattern = $pattern . '?(get:get)?';
+
 
       if (strpos($route, ':') === false) {
 
@@ -72,6 +74,8 @@ class Router
         $pattern = '(language:str)/' . $pattern;
       }
 
+      $pattern = $pattern . '?(get:get)?';
+
 
       if (strpos($route, ':') === false) {
 
@@ -104,15 +108,19 @@ class Router
   protected static function getRoute($url)
   {
 
+    //pr1(self::$routes);
+
     foreach (self::$routes as $pattern => $route) {
 
       //pr1($url);
 
       $pattern = self::convertPattern('#^' . $pattern . '$#i');
 
+      //pr1($pattern);
+
       if (preg_match($pattern, $url, $matches)) {
 
-        //pr($pattern);
+
 
 
         foreach ($matches as $k => $v) {
@@ -120,6 +128,8 @@ class Router
             $route[$k] = $v;
           }
         }
+
+        pr1($route);
 
         if (!isset($route['action'])) {
           $route['action'] = 'index';
@@ -156,6 +166,8 @@ class Router
       Helper::redirect(DOMEN . '/' . LANGUAGE);
     }
 
+    //pr1($url);
+
     if (!in_array($url, LANGUAGES)) {
 
 
@@ -184,20 +196,20 @@ class Router
 
 
 
-    if (strpos($url, '&') !== false | strpos($url, '=') !== false) {
-
-      if (strpos($url, 'method') === false) {
-
-
-
-        if (!in_array(explode('/', $url)[1], LANGUAGES)) {
-          $url = explode('/', $url)[1];
-        }
-
-        Helper::redirect(DOMEN . '/method/' .'&'. $url);
-
-      }
-    }
+//    if (strpos($url, '&') !== false | strpos($url, '=') !== false) {
+//
+//      if (strpos($url, 'method') === false) {
+//
+//
+//
+//        if (!in_array(explode('/', $url)[1], LANGUAGES)) {
+//          $url = explode('/', $url)[1];
+//        }
+//
+//        Helper::redirect(DOMEN . '/method/' .'&'. $url);
+//
+//      }
+//    }
 
 
     // if GET
