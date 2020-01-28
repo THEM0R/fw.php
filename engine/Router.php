@@ -36,7 +36,7 @@ class Router
         $pattern = '(language:str)/' . $pattern;
       }
 
-      $pattern = $pattern . '?(get:get)?';
+//      $pattern = $pattern . '?(get:get)?';
 
 
       if (strpos($route, ':') === false) {
@@ -74,7 +74,7 @@ class Router
         $pattern = '(language:str)/' . $pattern;
       }
 
-      $pattern = $pattern . '?(get:get)?';
+//      $pattern = $pattern . '?(get:get)?';
 
 
       if (strpos($route, ':') === false) {
@@ -129,7 +129,7 @@ class Router
           }
         }
 
-        pr1($route);
+//        pr1($route);
 
         if (!isset($route['action'])) {
           $route['action'] = 'index';
@@ -200,16 +200,26 @@ class Router
 //
 //      if (strpos($url, 'method') === false) {
 //
-//
-//
 //        if (!in_array(explode('/', $url)[1], LANGUAGES)) {
 //          $url = explode('/', $url)[1];
 //        }
 //
-//        Helper::redirect(DOMEN . '/method/' .'&'. $url);
+//        pr1($url);
 //
+//        Helper::redirect(DOMEN . '/method/' .'&'. $url);
 //      }
 //    }
+
+    if (strpos($url, '&') !== false | strpos($url, '=') !== false) {
+
+        if (!in_array(explode('/', $url)[1], LANGUAGES)) {
+          $url = explode('/', $url)[1];
+        }
+
+        //pr1(DOMEN . '/' . LANGUAGE.'/?'. $url);
+
+        Helper::redirect(DOMEN . '/' . LANGUAGE.'/'. $url);
+    }
 
 
     // if GET
@@ -233,6 +243,8 @@ class Router
 
       // Убрать пустые элементы из массива
 //      $r = array_diff($_GET, array());
+
+      //pr1($_GET);
 
       if (self::$route['method']['name'] == $_SERVER['REQUEST_METHOD']) {
 
