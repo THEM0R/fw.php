@@ -36,7 +36,9 @@ class Router
         $pattern = '(language:str)/' . $pattern;
       }
 
-//      $pattern = $pattern . '?(get:get)?';
+      $pattern = $pattern . '?(get:get)?';
+
+      //pr1($pattern);
 
 
       if (strpos($route, ':') === false) {
@@ -74,7 +76,7 @@ class Router
         $pattern = '(language:str)/' . $pattern;
       }
 
-//      $pattern = $pattern . '?(get:get)?';
+      $pattern = $pattern . '?(get:get)?';
 
 
       if (strpos($route, ':') === false) {
@@ -188,7 +190,7 @@ class Router
           $url = substr($url, 1);
         }
 
-        Helper::redirect(DOMEN . '/' . LANGUAGE . '/' . $url);
+        Helper::redirect(DOMEN . '/' . LANGUAGE . '/&' . $url);
       }
 
     }
@@ -210,16 +212,19 @@ class Router
 //      }
 //    }
 
-    if (strpos($url, '&') !== false | strpos($url, '=') !== false) {
+    //pr1($url);
 
-        if (!in_array(explode('/', $url)[1], LANGUAGES)) {
-          $url = explode('/', $url)[1];
-        }
-
-        //pr1(DOMEN . '/' . LANGUAGE.'/?'. $url);
-
-        Helper::redirect(DOMEN . '/' . LANGUAGE.'/'. $url);
-    }
+//    if (strpos($url, '&') !== false | strpos($url, '=') !== false) {
+//
+//        if (!in_array(explode('/', $url)[1], LANGUAGES)) {
+//          $url = explode('/', $url)[1];
+//        }
+//
+//        //pr1(DOMEN . '/' . LANGUAGE.'/?'. $url);
+//
+////        Helper::redirect(DOMEN . '/' . LANGUAGE.'/'. $url);
+//      Helper::redirect(DOMEN . '/'.LANGUAGE .'/&'. $url);
+//    }
 
 
     // if GET
@@ -230,9 +235,11 @@ class Router
 //        }
 
 
+    //pr1($url);
+
     if (self::getRoute($url)) {
 
-//            pr($_SERVER);
+            //pr($_SERVER);
 //            pr(HTTP_REFERER);
 //            if( Helper::lowerCamelCase(self::$route['controller']) == 'main' ){
 //              pr1($url);
