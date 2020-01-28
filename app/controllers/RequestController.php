@@ -5,7 +5,7 @@ namespace app\controllers;
 
 use engine\Helper;
 
-class MethodController extends AppController
+class RequestController extends AppController
 {
   public function indexAction($model, $route)
   {
