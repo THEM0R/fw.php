@@ -188,10 +188,14 @@ class Router
 
       if (in_array(substr($url, 0, 2), LANGUAGES)) {
 
-        pr1($url);
         $url = substr($url, 2);
-      }
 
+        if (strpos($url, '/') === 0) {
+          $url = substr($url, 1);
+        }
+
+        Helper::redirect(DOMEN . '/' . $url);
+      }
     }
 
 
