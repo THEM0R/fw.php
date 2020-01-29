@@ -3,6 +3,8 @@
 
 namespace engine;
 
+require_once __DIR__ . '/config/define.php';
+
 
 class Router
 {
@@ -39,7 +41,6 @@ class Router
         }
 
       }
-
 
 //      $pattern = $pattern . '?(get:get)?';
 
@@ -123,6 +124,7 @@ class Router
       $pattern = self::convertPattern('#^' . $pattern . '$#i');
 
       if (preg_match($pattern, $url, $matches)) {
+
         foreach ($matches as $k => $v) {
           if (is_string($k)) {
             $route[$k] = $v;
@@ -182,6 +184,14 @@ class Router
           Helper::redirect(DOMEN . '/' . LANGUAGE . '/' . $url);
         }
       }
+    }else{
+
+      if (in_array(substr($url, 0, 2), LANGUAGES)) {
+
+        pr1($url);
+        $url = substr($url, 2);
+      }
+
     }
 
 
@@ -201,10 +211,12 @@ class Router
       }
     }
 
-    pr1($url);
+//    pr1($url);
 
 
     if (self::getRoute($url)) {
+
+//      pr1($url);
 
       //pr($_SERVER);
       //pr(HTTP_REFERER);
