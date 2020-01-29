@@ -118,32 +118,20 @@ class Router
    */
   protected static function getRoute($url)
   {
-
-    //pr1(self::$routes);
-
     foreach (self::$routes as $pattern => $route) {
-
-      //pr1($url);
 
       $pattern = self::convertPattern('#^' . $pattern . '$#i');
 
-      //pr1($pattern);
-
       if (preg_match($pattern, $url, $matches)) {
-
-
         foreach ($matches as $k => $v) {
           if (is_string($k)) {
             $route[$k] = $v;
           }
         }
 
-//        pr1($route);
-
         if (!isset($route['action'])) {
           $route['action'] = 'index';
         }
-
 
         if (SL) {
           if (isset($route['language'])) {
@@ -156,7 +144,6 @@ class Router
             Helper::notFound();
           }
         }
-
 
         $route['controller'] = Helper::upperCamelCase($route['controller']);
         self::$route = $route;
@@ -176,18 +163,22 @@ class Router
       if ($url === '') {
         Helper::redirect(DOMEN . '/' . LANGUAGE);
       }
+
       if (!in_array($url, LANGUAGES)) {
         if (strpos($url, '/') !== false) {
           if (strpos($url, '/') !== strlen(LANGUAGE)) {
             Helper::redirect(DOMEN . '/' . LANGUAGE . '/' . $url);
           }
         } else {
+
           if (in_array(substr($url, 0, 2), LANGUAGES)) {
             $url = substr($url, 2);
           }
+
           if (strpos($url, '&') === 0) {
             $url = substr($url, 1);
           }
+
           Helper::redirect(DOMEN . '/' . LANGUAGE . '/' . $url);
         }
       }
@@ -201,15 +192,16 @@ class Router
             $url = explode('/', $url)[1];
           }
         }
+
         if (strpos($url, '&') === 0) {
           $url = substr($url, 1);
         }
+
         Helper::redirect(DOMEN . '/request/' . '&' . $url);
       }
     }
 
     pr1($url);
-
 
 
     if (self::getRoute($url)) {
