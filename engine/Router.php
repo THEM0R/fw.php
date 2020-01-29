@@ -146,19 +146,15 @@ class Router
 
 
         if (SL) {
-
           if (isset($route['language'])) {
-
             if (!in_array($route['language'], ['ua', 'ru'])) {
               Helper::notFound();
             } else {
               $_SESSION[LANGUAGE] = $route['language'];
             }
-
           } else {
             Helper::notFound();
           }
-
         }
 
 
@@ -175,36 +171,35 @@ class Router
 
     $url = rtrim($_SERVER['QUERY_STRING'], '/');
 
-    /** якшо в $url пусто */
-    if ($url === '') {
-      Helper::redirect(DOMEN . '/' . LANGUAGE);
-    }
-//    pr1($url);
+    if (SL) {
+      /** якшо в $url пусто */
+      if ($url === '') {
+        Helper::redirect(DOMEN . '/' . LANGUAGE);
+      }
+
+      if (!in_array($url, LANGUAGES)) {
 
 
-//    pr1($url);
+        if (strpos($url, '/') !== false) {
 
-    if (!in_array($url, LANGUAGES)) {
+          if (strpos($url, '/') !== strlen(LANGUAGE)) {
 
+            Helper::redirect(DOMEN . '/' . LANGUAGE . '/' . $url);
+          }
 
-      if (strpos($url, '/') !== false) {
+        } else {
 
-        if (strpos($url, '/') !== strlen(LANGUAGE)) {
+          if (in_array(substr($url, 0, 2), LANGUAGES)) {
+            $url = substr($url, 2);
+          }
+
+          if (strpos($url, '&') === 0) {
+            $url = substr($url, 1);
+          }
 
           Helper::redirect(DOMEN . '/' . LANGUAGE . '/' . $url);
         }
 
-      } else {
-
-        if (in_array(substr($url, 0, 2), LANGUAGES)) {
-          $url = substr($url, 2);
-        }
-
-        if (strpos($url, '&') === 0) {
-          $url = substr($url, 1);
-        }
-
-        Helper::redirect(DOMEN . '/' . LANGUAGE . '/' . $url);
       }
 
     }
