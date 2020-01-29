@@ -176,91 +176,50 @@ class Router
       if ($url === '') {
         Helper::redirect(DOMEN . '/' . LANGUAGE);
       }
-
       if (!in_array($url, LANGUAGES)) {
-
-
         if (strpos($url, '/') !== false) {
-
           if (strpos($url, '/') !== strlen(LANGUAGE)) {
-
             Helper::redirect(DOMEN . '/' . LANGUAGE . '/' . $url);
           }
-
         } else {
-
           if (in_array(substr($url, 0, 2), LANGUAGES)) {
             $url = substr($url, 2);
           }
-
           if (strpos($url, '&') === 0) {
             $url = substr($url, 1);
           }
-
           Helper::redirect(DOMEN . '/' . LANGUAGE . '/' . $url);
         }
-
       }
-
     }
 
 
     if (strpos($url, '&') !== false | strpos($url, '=') !== false) {
-
       if (strpos($url, 'request') === false) {
-
-        if (!in_array(explode('/', $url)[1], LANGUAGES)) {
-          $url = explode('/', $url)[1];
+        if (SL) {
+          if (!in_array(explode('/', $url)[1], LANGUAGES)) {
+            $url = explode('/', $url)[1];
+          }
         }
-
         if (strpos($url, '&') === 0) {
           $url = substr($url, 1);
         }
-
         Helper::redirect(DOMEN . '/request/' . '&' . $url);
       }
     }
 
-    //pr1($url);
-
-//    if (strpos($url, '&') !== false | strpos($url, '=') !== false) {
-//
-//        if (!in_array(explode('/', $url)[1], LANGUAGES)) {
-//          $url = explode('/', $url)[1];
-//        }
-//
-//        //pr1(DOMEN . '/' . LANGUAGE.'/?'. $url);
-//
-////        Helper::redirect(DOMEN . '/' . LANGUAGE.'/'. $url);
-//      Helper::redirect(DOMEN . '/'.LANGUAGE .'/&'. $url);
-//    }
+    pr1($url);
 
 
-    // if GET
-//        if (Helper::is_Get($url)) {
-//            if (strpos($url, '&')) {
-//                $url = explode('&', $url)[0];
-//            }
-//        }
-
-
-    //pr1($url);
 
     if (self::getRoute($url)) {
 
       //pr($_SERVER);
-//            pr(HTTP_REFERER);
-//            if( Helper::lowerCamelCase(self::$route['controller']) == 'main' ){
-//              pr1($url);
-//            }
+      //pr(HTTP_REFERER);
 
       // https://artkiev.com/blog/php-proxy-detected.htm
-
-
       // Убрать пустые элементы из массива
-//      $r = array_diff($_GET, array());
 
-      //pr1($_GET);
 
       if (self::$route['method']['name'] == $_SERVER['REQUEST_METHOD']) {
 
