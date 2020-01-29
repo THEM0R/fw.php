@@ -30,11 +30,16 @@ class Router
 
     if (is_string($route)) {
 
-      if ($pattern == '') {
-        $pattern = '(language:str)' . $pattern;
-      } else {
-        $pattern = '(language:str)/' . $pattern;
+      if(SL) {
+
+        if ($pattern == '') {
+          $pattern = '(language:str)' . $pattern;
+        } else {
+          $pattern = '(language:str)/' . $pattern;
+        }
+
       }
+
 
 //      $pattern = $pattern . '?(get:get)?';
 

@@ -20,6 +20,8 @@ define('THEME', 'default');
 
 // LANGUAGE
 
+define('SL', 1); // SEVERAL_LANGUAGES -- РІЗНІ МОВИ
+
 define('LANGUAGES', [
     1 => 'ua',
     2 => 'ru'
