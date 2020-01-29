@@ -30,7 +30,7 @@ class Router
 
     if (is_string($route)) {
 
-      if(SL) {
+      if (SL) {
 
         if ($pattern == '') {
           $pattern = '(language:str)' . $pattern;
@@ -75,10 +75,14 @@ class Router
 
     if (is_string($route)) {
 
-      if ($pattern == '') {
-        $pattern = '(language:str)' . $pattern;
-      } else {
-        $pattern = '(language:str)/' . $pattern;
+      if (SL) {
+
+        if ($pattern == '') {
+          $pattern = '(language:str)' . $pattern;
+        } else {
+          $pattern = '(language:str)/' . $pattern;
+        }
+
       }
 
 //      $pattern = $pattern . '?(get:get)?';
@@ -128,8 +132,6 @@ class Router
       if (preg_match($pattern, $url, $matches)) {
 
 
-
-
         foreach ($matches as $k => $v) {
           if (is_string($k)) {
             $route[$k] = $v;
@@ -142,16 +144,21 @@ class Router
           $route['action'] = 'index';
         }
 
-        if (isset($route['language'])) {
 
-          if (!in_array($route['language'], ['ua', 'ru'])) {
-            Helper::notFound();
+        if (SL) {
+
+          if (isset($route['language'])) {
+
+            if (!in_array($route['language'], ['ua', 'ru'])) {
+              Helper::notFound();
+            } else {
+              $_SESSION[LANGUAGE] = $route['language'];
+            }
+
           } else {
-            $_SESSION[LANGUAGE] = $route['language'];
+            Helper::notFound();
           }
 
-        } else {
-          Helper::notFound();
         }
 
 
@@ -215,7 +222,7 @@ class Router
           $url = substr($url, 1);
         }
 
-        Helper::redirect(DOMEN . '/request/' .'&'. $url);
+        Helper::redirect(DOMEN . '/request/' . '&' . $url);
       }
     }
 
@@ -246,7 +253,7 @@ class Router
 
     if (self::getRoute($url)) {
 
-            //pr($_SERVER);
+      //pr($_SERVER);
 //            pr(HTTP_REFERER);
 //            if( Helper::lowerCamelCase(self::$route['controller']) == 'main' ){
 //              pr1($url);
