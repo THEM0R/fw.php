@@ -1,7 +1,7 @@
 <?php
 use engine\Router;
 
-Router::post('(post:all)/(old:all)(url:all)', 'Main:test');
+Router::post('(post:all)/(old:all)', 'Main:test');
 
 Router::get('request/(url:get)', 'request');
 

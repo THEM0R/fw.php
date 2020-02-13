@@ -121,9 +121,17 @@ class Router
   {
     foreach (self::$routes as $pattern => $route) {
 
+      pr($pattern);
+
       $pattern = self::convertPattern('#^' . $pattern . '$#i');
 
+
+
       if (preg_match($pattern, $url, $matches)) {
+
+        pr($url);
+        pr($pattern);
+        pr1($matches);
 
         foreach ($matches as $k => $v) {
           if (is_string($k)) {
@@ -157,6 +165,9 @@ class Router
 
   public static function Run()
   {
+
+    //pr1(self::$routes);
+
 
     $url = rtrim($_SERVER['QUERY_STRING'], '/');
 
@@ -296,11 +307,14 @@ class Router
       return $pattern;
     }
 
+    //pr1(preg_replace_callback('#\((\w+):(\w+)\)#', ['self', 'replacePattern'], $pattern));
+
     return preg_replace_callback('#\((\w+):(\w+)\)#', ['self', 'replacePattern'], $pattern);
   }
 
   protected static function replacePattern($matches)
   {
+
     return '(?<' . $matches[1] . '>' . strtr($matches[2], self::$Patterns) . ')';
   }
 
