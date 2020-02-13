@@ -24,7 +24,7 @@ class Router
       'int' => '[0-9]+',
       'str' => '[a-zA-Z\.\-_%]+',
       'all' => '[a-zA-Z0-9\.\-_%]+',
-      'get' => '[a-zA-Z0-9\.\-_%=&]+'
+      'get' => '[a-zA-Z0-9\.\-_%=&?]+'
   ];
 
   public static function get($pattern, $route, $view = false)
@@ -121,17 +121,21 @@ class Router
   {
     foreach (self::$routes as $pattern => $route) {
 
-      pr($pattern);
+      //pr($pattern);
 
       $pattern = self::convertPattern('#^' . $pattern . '$#i');
+//      $pattern = self::convertPattern('#^' . $pattern .'?(get:get)?'. '$#i');
+
+      //pr($pattern);
 
 
 
       if (preg_match($pattern, $url, $matches)) {
 
+        //pr1($pattern);
+
         pr($url);
-        pr($pattern);
-        pr1($matches);
+        pr($matches);
 
         foreach ($matches as $k => $v) {
           if (is_string($k)) {
@@ -210,21 +214,21 @@ class Router
     }
 
 
-    if (strpos($url, '&') !== false | strpos($url, '=') !== false) {
-      if (strpos($url, 'request') === false) {
-        if (SL) {
-          if (!in_array(explode('/', $url)[1], LANGUAGES)) {
-            $url = explode('/', $url)[1];
-          }
-        }
-
-        if (strpos($url, '&') === 0) {
-          $url = substr($url, 1);
-        }
-
-        Helper::redirect(DOMEN . '/request/' . '&' . $url);
-      }
-    }
+//    if (strpos($url, '&') !== false | strpos($url, '=') !== false) {
+//      if (strpos($url, 'request') === false) {
+//        if (SL) {
+//          if (!in_array(explode('/', $url)[1], LANGUAGES)) {
+//            $url = explode('/', $url)[1];
+//          }
+//        }
+//
+//        if (strpos($url, '&') === 0) {
+//          $url = substr($url, 1);
+//        }
+//
+//        Helper::redirect(DOMEN . '/request/' . '&' . $url);
+//      }
+//    }
 
 //    pr1($url);
 
@@ -314,6 +318,8 @@ class Router
 
   protected static function replacePattern($matches)
   {
+
+    //pr1('(?<' . $matches[1] . '>' . strtr($matches[2], self::$Patterns) . ')');
 
     return '(?<' . $matches[1] . '>' . strtr($matches[2], self::$Patterns) . ')';
   }
