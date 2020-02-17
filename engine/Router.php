@@ -171,7 +171,10 @@ class Router
         //pr1(self::$routes);
 
 
-        $url = rtrim($_SERVER['QUERY_STRING'], '/');
+        //$url = rtrim($_SERVER['QUERY_STRING'], '/');
+        $url = rtrim($_GET['url'], '/');
+
+        //pr($url);
 
         if (SL) {
             /** якшо в $url пусто */

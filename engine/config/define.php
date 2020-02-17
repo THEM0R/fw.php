@@ -16,7 +16,7 @@ define('THEME', 'default');
 
 // LANGUAGE
 
-define('SL', 1); // SEVERAL_LANGUAGES -- РІЗНІ МОВИ
+define('SL', 0); // SEVERAL_LANGUAGES -- РІЗНІ МОВИ
 
 
 define('LANGUAGES', [
