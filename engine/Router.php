@@ -113,6 +113,8 @@ class Router
     } // is_string
   }
 
+
+
   /**
    * @param $url
    * @return bool
@@ -132,7 +134,9 @@ class Router
 
       if (preg_match($pattern, $url, $matches)) {
 
-        //pr1($pattern);
+        pr4($pattern);
+
+        // <pre>#^(?<language>[a-zA-Z\.\-_%]+)/(?<get>[a-zA-Z0-9\.\-_%=&?]+)$#i</pre>
 
         pr($url);
         pr($matches);
@@ -311,7 +315,7 @@ class Router
       return $pattern;
     }
 
-    pr1($pattern);
+//    pr1($pattern);
 
     //pr1(preg_replace_callback('#\((\w+):(\w+)\)#', ['self', 'replacePattern'], $pattern));
 
@@ -320,7 +324,6 @@ class Router
 
   protected static function replacePattern($matches)
   {
-
     //pr1('(?<' . $matches[1] . '>' . strtr($matches[2], self::$Patterns) . ')');
 
     return '(?<' . $matches[1] . '>' . strtr($matches[2], self::$Patterns) . ')';

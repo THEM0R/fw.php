@@ -11,6 +11,12 @@ function pr1($arr)
     exit;
 }
 
+function pr4($arr)
+{
+  echo '<pre style="font-size: 18px;font-weight: bold;font-family: Tahoma">' . htmlspecialchars( print_r($arr, true) ). '</pre>';
+  exit;
+}
+
 function pr2($arr)
 {
     echo '<pre>' , var_dump($arr) , '</pre>';

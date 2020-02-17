@@ -23,3 +23,5 @@ Router::get('(get:get)', 'Main','main');
 
 //
 //Router::get('^(?P<controller>[a-z-]+)/?(?P<action>[a-z-]+)?$', 'Main','main');
+//Router::get('^film/(?P<url>[a-z-]+)$', 'Main','main');
+//Router::get('^film/(?P<url>[a-z-]+)/online$', 'Main','main');
