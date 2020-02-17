@@ -19,3 +19,7 @@ Router::get('(category:all)/page/(page:int)', 'category');
 //Router::get('(get:get)', 'Main:get','main');
 //Router::get('?(get:get)?', 'Main','main');
 Router::get('(get:get)', 'Main','main');
+
+
+//
+//Router::get('^(?P<controller>[a-z-]+)/?(?P<action>[a-z-]+)?$', 'Main','main');

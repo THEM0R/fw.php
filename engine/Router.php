@@ -311,6 +311,8 @@ class Router
       return $pattern;
     }
 
+    pr1($pattern);
+
     //pr1(preg_replace_callback('#\((\w+):(\w+)\)#', ['self', 'replacePattern'], $pattern));
 
     return preg_replace_callback('#\((\w+):(\w+)\)#', ['self', 'replacePattern'], $pattern);
