@@ -4,4 +4,8 @@ require_once __DIR__ . '/../vendor/autoload.php';
 require_once __DIR__ . '/../engine/routes.php';
 require_once __DIR__ . '/../engine/config/define.php';
 
+//pr(engine\Router::getRoutes());
+
+
 engine\Router::Run();
+

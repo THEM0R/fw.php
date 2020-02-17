@@ -1,24 +1,34 @@
 <?php
 use engine\Router;
 
-Router::post('(post:all)/(old:all)', 'Main:test');
 
-Router::get('request/(url:get)', 'request');
+//Router::post('(post:all)/(old:all)', 'Main:test');
 
-/* view */
-Router::get('(category:all)/(url:all)', 'view:index','view');
-Router::get('(category:all)/(url:all)/(action:str)', 'View');
 
-/* category */
-Router::get('(category:all)', 'category','category');
-Router::get('(category:all)/page/(page:int)', 'category');
+//
+///* category */
+//Router::get('(category:str)', 'category','category');
+//Router::get('(category:all)/(page:int)', 'category','category_page');
+//
+///* view */
+//Router::get('(category:all)/(url:str)', 'main:view');
+//Router::get('(category:all)/(url:all)/(cn:str)', 'main:views');
+//
+//
+//Router::get('request/(url:get)', 'request');
 
+
+
+
+Router::get('', 'Main','main');
 
 
 /* index */
-Router::get('(url:all)', 'Main:get','main');
+//Router::get('(url:all)', 'Main:get','main');
 //Router::get('?(get:get)?', 'Main','main');
 //Router::get('', 'Main','main');
+
+
 
 //pr4(Router::getRoutes());
 

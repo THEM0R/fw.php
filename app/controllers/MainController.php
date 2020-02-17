@@ -29,5 +29,16 @@ class MainController extends AppController
         pr1($route);
     }
 
+    public function viewAction($model, $route)
+    {
+        pr1($route);
+    }
+
+    public function viewsAction($model, $route)
+    {
+        pr1($route);
+    }
+
+
 
 }

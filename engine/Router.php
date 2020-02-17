@@ -24,7 +24,7 @@ class Router
         'int' => '[0-9]+',
         'str' => '[a-zA-Z\.\-_%]+',
         'all' => '[a-zA-Z0-9\.\-_%]+',
-        'get' => '[a-zA-Z0-9\.\-_%=&?]+'
+        'get' => '[a-zA-Z0-9\.\-_%=&?]*'
     ];
 
     private static function pattern($pattern)
@@ -40,8 +40,8 @@ class Router
 
         }
 
-        //return $pattern = $pattern . '?(get:get)?';
-        return $pattern;
+        return $pattern = $pattern . '/?(get:get)';
+        //return $pattern;
 
     }
 
@@ -118,22 +118,17 @@ class Router
     {
         foreach (self::$routes as $pattern => $route) {
 
-            //pr($pattern);
-
             $pattern = self::convertPattern('#^' . $pattern . '$#i');
-//      $pattern = self::convertPattern('#^' . $pattern .'?(get:get)?'. '$#i');
 
-            //pr($pattern);
+
+            //pr4($pattern);
 
 
             if (preg_match($pattern, $url, $matches)) {
 
-                //pr4($pattern);
-
                 // <pre>#^(?<language>[a-zA-Z\.\-_%]+)/(?<get>[a-zA-Z0-9\.\-_%=&?]+)$#i</pre>
 
-                //pr($url);
-                //pr($matches);
+
 
                 foreach ($matches as $k => $v) {
                     if (is_string($k)) {
@@ -159,6 +154,9 @@ class Router
 
                 $route['controller'] = Helper::upperCamelCase($route['controller']);
                 self::$route = $route;
+
+//                pr2($route);
+
                 return true;
             }
         }
@@ -168,13 +166,9 @@ class Router
     public static function Run()
     {
 
-        //pr1(self::$routes);
+        $url = rtrim($_SERVER['QUERY_STRING'], '/');
 
 
-        //$url = rtrim($_SERVER['QUERY_STRING'], '/');
-        $url = rtrim($_GET['url'], '/');
-
-        //pr($url);
 
         if (SL) {
             /** якшо в $url пусто */
@@ -210,6 +204,8 @@ class Router
                     $url = substr($url, 1);
                 }
 
+//                /pr(DOMEN . '/' . $url);
+
                 Helper::redirect(DOMEN . '/' . $url);
             }
         }
@@ -235,11 +231,6 @@ class Router
 
 
         if (self::getRoute($url)) {
-
-//      pr1($url);
-
-            //pr($_SERVER);
-            //pr(HTTP_REFERER);
 
             // https://artkiev.com/blog/php-proxy-detected.htm
             // Убрать пустые элементы из массива
@@ -274,7 +265,7 @@ class Router
                     $action = Helper::lowerCamelCase(self::$route['action']) . 'Action';
 
                     // unset optimize
-                    unset($controller);
+                    //unset($controller);
 
                     if (method_exists($ControllerObject, $action)) {
 
@@ -284,14 +275,14 @@ class Router
                         // unset optimize
                         unset($modelObject);
                         unset($ControllerObject);
-                        unset($action);
+                        //unset($action);
 
                     } else {
-                        Helper::notFound();
+                        Helper::notFound('no method in '.$controller.' '.$action);
                     }
 
                 } else {
-                    Helper::notFound();
+                    Helper::notFound('no controller '.$controller);
                 }
 
             } else {

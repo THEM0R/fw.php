@@ -1,6 +1,6 @@
 <?php
 
-function pr4($arr)
+function pr($arr)
 {
     echo '<pre>' . print_r($arr, true) . '</pre>';
 }
@@ -11,7 +11,7 @@ function pr1($arr)
     exit;
 }
 
-function pr($arr)
+function pr4($arr)
 {
   echo '<pre style="font-size: 18px;font-weight: bold;font-family: Tahoma">' . htmlspecialchars( print_r($arr, true) ). '</pre>';
   exit;
