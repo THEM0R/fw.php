@@ -6,5 +6,7 @@ require_once __DIR__ . '/../engine/function.php';
 //
 //engine\Router::Run();
 
+echo 'bootstrap';
+
 pr2($_GET);
 pr($_GET['url']);
