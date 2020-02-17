@@ -42,7 +42,7 @@ class Router
 
       }
 
-//      $pattern = $pattern . '?(get:get)?';
+      $pattern = $pattern . '?(get:get)?';
 
       //pr1($pattern);
 
@@ -86,7 +86,7 @@ class Router
 
       }
 
-//      $pattern = $pattern . '?(get:get)?';
+      $pattern = $pattern . '?(get:get)?';
 
 
       if (strpos($route, ':') === false) {

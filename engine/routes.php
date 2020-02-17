@@ -18,10 +18,11 @@ Router::get('(category:all)/page/(page:int)', 'category');
 /* index */
 //Router::get('(get:get)', 'Main:get','main');
 //Router::get('?(get:get)?', 'Main','main');
-Router::get('(get:get)', 'Main','main');
+Router::get('', 'Main','main');
 
 
 //
 //Router::get('^(?P<controller>[a-z-]+)/?(?P<action>[a-z-]+)?$', 'Main','main');
+//Router::get('^(?<controller>[a-z-]+)/?(?<action>[a-z-]+)?$', 'Main','main');
 //Router::get('^film/(?P<url>[a-z-]+)$', 'Main','main');
 //Router::get('^film/(?P<url>[a-z-]+)/online$', 'Main','main');
