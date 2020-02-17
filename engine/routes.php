@@ -16,9 +16,11 @@ Router::get('(category:all)/page/(page:int)', 'category');
 
 
 /* index */
-//Router::get('(get:get)', 'Main:get','main');
+Router::get('(url:all)', 'Main:get','main');
 //Router::get('?(get:get)?', 'Main','main');
-Router::get('', 'Main','main');
+//Router::get('', 'Main','main');
+
+//pr4(Router::getRoutes());
 
 
 //

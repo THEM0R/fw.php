@@ -24,10 +24,10 @@ class MainController extends AppController
     }
 
 
-  public function getAction($model, $route)
-  {
-    pr1($route);
-  }
+    public function getAction($model, $route)
+    {
+        pr1($route);
+    }
 
 
 }
