@@ -199,7 +199,7 @@ class Router
 
     self::SeveralLanguages($url);
 
-    //self::request($url);
+    self::request($url);
 
     if (self::getRoute($url)) {
 
