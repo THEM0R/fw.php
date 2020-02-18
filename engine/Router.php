@@ -27,6 +27,10 @@ class Router
       'get' => '[a-zA-Z0-9\.\-_%=&?]*'
   ];
 
+  /**
+   * @param $pattern
+   * @return string
+   */
   private static function pattern($pattern)
   {
 
@@ -45,19 +49,34 @@ class Router
 
   }
 
+  /**
+   * @param $pattern
+   * @param $route
+   * @param bool $view
+   */
   public static function get($pattern, $route, $view = false)
   {
     self::addRoute($pattern, $route, $view, 'GET');
   }
 
+  /**
+   * @param $pattern
+   * @param $route
+   * @param $view
+   */
   public static function post($pattern, $route, $view)
   {
     self::addRoute($pattern, $route, $view, 'POST');
   }
 
+  /**
+   * @param $pattern
+   * @param $route
+   * @param bool $view
+   * @param string $method
+   */
   public static function addRoute($pattern, $route, $view = false, $method = 'GET')
   {
-
     if (is_string($route)) {
 
       $pattern = self::pattern($pattern);
@@ -80,70 +99,16 @@ class Router
             'view' => $view,
             'method' => ['name' => $method]
         ];
-
       }
-
     } // is_string
   }
 
-
   /**
    * @param $url
-   * @return bool
+   * SEVERAL LANGUAGES -- РІЗНІ МОВИ
    */
-  protected static function getRoute($url)
+  private static function SeveralLanguages($url)
   {
-    foreach (self::$routes as $pattern => $route) {
-
-      $pattern = self::convertPattern('#^' . $pattern . '$#i');
-
-
-      //pr4($pattern);
-
-
-      if (preg_match($pattern, $url, $matches)) {
-
-        // <pre>#^(?<language>[a-zA-Z\.\-_%]+)/(?<get>[a-zA-Z0-9\.\-_%=&?]+)$#i</pre>
-
-
-        foreach ($matches as $k => $v) {
-          if (is_string($k)) {
-            $route[$k] = $v;
-          }
-        }
-
-        if (!isset($route['action'])) {
-          $route['action'] = 'index';
-        }
-
-        if (SL) {
-          if (isset($route['language'])) {
-            if (!in_array($route['language'], ['ua', 'ru'])) {
-              Helper::notFound();
-            } else {
-              $_SESSION[LANGUAGE] = $route['language'];
-            }
-          } else {
-            Helper::notFound();
-          }
-        }
-
-        $route['controller'] = Helper::upperCamelCase($route['controller']);
-        self::$route = $route;
-
-//                pr2($route);
-
-        return true;
-      }
-    }
-    return false;
-  }
-
-  public static function Run()
-  {
-
-    $url = rtrim($_SERVER['QUERY_STRING'], '/');
-
 
     if (SL) {
       /** якшо в $url пусто */
@@ -184,84 +149,106 @@ class Router
         Helper::redirect(DOMEN . '/' . $url);
       }
     }
+  }
 
+  /**
+   * @param $url
+   * redirect to request
+   */
+  private static function request($url)
+  {
+    if (strpos($url, '&') !== false | strpos($url, '=') !== false) {
+      if (strpos($url, 'request') === false) {
+        if (SL) {
+          if (!in_array(explode('/', $url)[1], LANGUAGES)) {
+            $url = explode('/', $url)[1];
+          }
+        }
 
-//    if (strpos($url, '&') !== false | strpos($url, '=') !== false) {
-//      if (strpos($url, 'request') === false) {
-//        if (SL) {
-//          if (!in_array(explode('/', $url)[1], LANGUAGES)) {
-//            $url = explode('/', $url)[1];
-//          }
-//        }
-//
-//        if (strpos($url, '&') === 0) {
-//          $url = substr($url, 1);
-//        }
-//
-//        Helper::redirect(DOMEN . '/request/' . '&' . $url);
-//      }
-//    }
+        if (strpos($url, '&') === 0) {
+          $url = substr($url, 1);
+        }
 
-//    pr1($url);
+        Helper::redirect(DOMEN . '/request/' . '&' . $url);
+      }
+    }
+  }
 
+  /**
+   * SERVER REQUEST_METHOD
+   */
+  private static function requestMethod()
+  {
+    if (self::$route['method']['name'] !== $_SERVER['REQUEST_METHOD']) {
+      Helper::notFound('REQUEST_METHOD не співпадає');
+    }
+    if (self::$route['method']['name'] == 'GET') {
+      self::$route['method']['data'] = Helper::array_clear($_GET);
+    } else if (self::$route['method']['name'] == 'POST') {
+      self::$route['method']['data'] = Helper::array_clear($_POST);
+    }
+  }
+
+  /**
+   * @START PROGRAM
+   */
+  public static function Run()
+  {
+
+    $url = rtrim($_SERVER['QUERY_STRING'], '/');
+
+    self::SeveralLanguages($url);
+
+    //self::request($url);
 
     if (self::getRoute($url)) {
+
+      // unset optimize
+      unset($url);
 
       // https://artkiev.com/blog/php-proxy-detected.htm
       // Убрать пустые элементы из массива
 
+      self::requestMethod();
 
-      if (self::$route['method']['name'] == $_SERVER['REQUEST_METHOD']) {
+      $controller = 'app\\controllers\\' . self::$route['controller'] . 'Controller';
 
-        if (self::$route['method']['name'] == 'GET') {
+      if (class_exists($controller)) {
 
-          self::$route['method']['data'] = Helper::array_clear($_GET);
-        } else if (self::$route['method']['name'] == 'POST') {
-          self::$route['method']['data'] = Helper::array_clear($_POST);
-        }
-
-        $controller = 'app\\controllers\\' . self::$route['controller'] . 'Controller';
-        if (class_exists($controller)) {
-
-
-          // модель
-          $model = 'app\\models\\' . self::$route['controller'] . 'Model';
-          if (class_exists($model)) {
-            $modelObject = new $model(self::$route);
-
-            // unset optimize
-            unset($model);
-
-          } else {
-            $modelObject = null;
-          }
-
-          $ControllerObject = new $controller($modelObject, self::$route);
-          $action = Helper::lowerCamelCase(self::$route['action']) . 'Action';
+        // модель
+        $model = 'app\\models\\' . self::$route['controller'] . 'Model';
+        if (class_exists($model)) {
+          $modelObject = new $model(self::$route);
 
           // unset optimize
-          //unset($controller);
-
-          if (method_exists($ControllerObject, $action)) {
-
-            $ControllerObject->$action($modelObject, self::$route);
-            $ControllerObject->getView();
-
-            // unset optimize
-            unset($modelObject);
-            unset($ControllerObject);
-            //unset($action);
-
-          } else {
-            Helper::notFound('no method in ' . $controller . ' ' . $action);
-          }
+          unset($model);
 
         } else {
-          Helper::notFound('no controller ' . $controller);
+          $modelObject = null;
+        }
+
+        $ControllerObject = new $controller($modelObject, self::$route);
+        $action = Helper::lowerCamelCase(self::$route['action']) . 'Action';
+
+        // unset optimize
+        //unset($controller);
+
+        if (method_exists($ControllerObject, $action)) {
+
+          $ControllerObject->$action($modelObject, self::$route);
+          $ControllerObject->getView();
+
+          // unset optimize
+          unset($modelObject);
+          unset($ControllerObject);
+          //unset($action);
+
+        } else {
+          Helper::notFound('no method in ' . $controller . ' ' . $action);
         }
 
       } else {
-        Helper::notFound('REQUEST_METHOD не співпадає');
+        Helper::notFound('no controller ' . $controller);
       }
 
 
@@ -270,12 +257,64 @@ class Router
     }
   }
 
+
+  /**
+   * @param $url
+   * @return bool
+   */
+  protected static function getRoute($url)
+  {
+    foreach (self::$routes as $pattern => $route) {
+
+      $pattern = self::convertPattern('#^' . $pattern . '$#i');
+
+      if (preg_match($pattern, $url, $matches)) {
+
+        // <pre>#^(?<language>[a-zA-Z\.\-_%]+)/(?<get>[a-zA-Z0-9\.\-_%=&?]+)$#i</pre>
+
+        foreach ($matches as $k => $v) {
+          if (is_string($k)) {
+            $route[$k] = $v;
+          }
+        }
+
+        if (!isset($route['action'])) {
+          $route['action'] = 'index';
+        }
+
+        if (SL) {
+          if (isset($route['language'])) {
+            if (!in_array($route['language'], ['ua', 'ru'])) {
+              Helper::notFound();
+            } else {
+              $_SESSION[LANGUAGE] = $route['language'];
+            }
+          } else {
+            Helper::notFound();
+          }
+        }
+
+        $route['controller'] = Helper::upperCamelCase($route['controller']);
+        self::$route = $route;
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
+   * @return array self::$routes
+   */
   public static function getRoutes()
   {
     return self::$routes;
   }
 
 
+  /**
+   * @param $pattern
+   * @return string|string[]|null
+   */
   protected static function convertPattern($pattern)
   {
 
@@ -283,13 +322,13 @@ class Router
       return $pattern;
     }
 
-//    pr1($pattern);
-
-    //pr1(preg_replace_callback('#\((\w+):(\w+)\)#', ['self', 'replacePattern'], $pattern));
-
     return preg_replace_callback('#\((\w+):(\w+)\)#', ['self', 'replacePattern'], $pattern);
   }
 
+  /**
+   * @param $matches
+   * @return string
+   */
   protected static function replacePattern($matches)
   {
     return '(?<' . $matches[1] . '>' . strtr($matches[2], self::$Patterns) . ')';
