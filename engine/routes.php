@@ -5,17 +5,17 @@ use engine\Router;
 //Router::post('(post:all)/(old:all)', 'Main:test');
 
 
-//
-///* category */
-//Router::get('(category:str)', 'category','category');
-//Router::get('(category:all)/(page:int)', 'category','category_page');
-//
-///* view */
-//Router::get('(category:all)/(url:str)', 'main:view');
-//Router::get('(category:all)/(url:all)/(cn:str)', 'main:views');
-//
-//
-//Router::get('request/(url:get)', 'request');
+
+/* category */
+Router::get('(category:str)', 'category','category');
+Router::get('(category:all)/(page:int)', 'category','category_page');
+
+/* view */
+Router::get('(category:all)/(url:str)', 'main:view');
+Router::get('(category:all)/(url:all)/(cn:str)', 'main:views');
+
+
+Router::get('request/(url:get)', 'request');
 
 
 
