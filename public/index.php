@@ -7,7 +7,10 @@ require_once __DIR__ . '/../engine/config/define.php';
 //pr1($_SERVER);
 //pr3($_SERVER['QUERY_STRING']);
 //
-//pr3(engine\Router::getUrl());
+
+$app = new \engine\Router();
+
+//pr1(engine\Router::$url);
 
 
 engine\Router::Run();

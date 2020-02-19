@@ -9,6 +9,11 @@ require_once __DIR__ . '/config/define.php';
 class Router
 {
 
+  public function __construct()
+  {
+    self::$url = self::getUrl();
+  }
+
   public static $url;
 
   /**
@@ -211,7 +216,7 @@ class Router
 
   public static function getUrl(){
 
-    $url = $_SERVER['QUERY_STRING'];
+    $url = trim($_SERVER['REQUEST_URI'], '/');
     //$url = $_SERVER['REQUEST_URI'];
 
     $pos = strpos($url, '?');
@@ -220,7 +225,9 @@ class Router
       $url = substr($url, 0, $pos);
     }
 
-    return $url;
+    pr1($url);
+
+    return '+++';
   }
 
   /**
@@ -229,14 +236,8 @@ class Router
   public static function Run()
   {
 
-    //pr1(self::$url);
-
-    //$url = rtrim($_SERVER['QUERY_STRING'], '/');
-    //$url = ltrim($_SERVER['QUERY_STRING'], '/');
+    pr1(self::$url);
     $url = trim($_SERVER['REQUEST_URI'], '/');
-    //$url = trim($_SERVER['REQUEST_URI']);
-
-    //pr1($url);
 
 
 
@@ -313,22 +314,7 @@ class Router
 
       $pattern = self::convertPattern("#^" . $pattern . "$#i");
 
-      //^(?<language>[a-zA-Z\.\-_%]+)/?([a-zA-Z0-9-_=?%&]*)$
-
-//      pr($url);
-//      pr($pattern);
-//      pr('#^([a-zA-Z\.\-_%]+)/?([a-zA-Z0-9-_=?%&]*)$#i');
-
-      //pr1(preg_match('#^([a-zA-Z\.\-_%]+)/?([a-zA-Z0-9-_=?%&]*)$#i', $url, $matches));
-
-      //var_dump(preg_match($pattern, $url, $matches));
-      //var_dump(preg_match('#^(?<language>[a-zA-Z\.\-_%]+)/?([a-zA-Z0-9-_=?%&]*)$#i', $url, $matches));
-
       if (preg_match($pattern, $url, $matches)) {
-
-        //pr1($pattern);
-
-        // <pre>#^(?<language>[a-zA-Z\.\-_%]+)/(?<get>[a-zA-Z0-9\.\-_%=&?]+)$#i</pre>
 
         foreach ($matches as $k => $v) {
           if (is_string($k)) {
