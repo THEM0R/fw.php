@@ -14,7 +14,7 @@ class Router
     self::$url = self::getUrl();
   }
 
-  public static $url;
+  private static $url;
 
   /**
    * @var $routes
@@ -41,20 +41,14 @@ class Router
    */
   private static function pattern($pattern)
   {
-
     if (SL) {
-
       if ($pattern == '') {
         $pattern = '(language:str)' . $pattern;
       } else {
         $pattern = '(language:str)/' . $pattern;
       }
-
     }
-
-    //return $pattern = $pattern . '/?(get:get)';
     return $pattern;
-
   }
 
   /**
@@ -123,8 +117,6 @@ class Router
       }
       $url = rtrim($url,'&');
 
-      pr1($url);
-
       Helper::redirect(DOMEN . '/' . LANGUAGE . '/' . $url);
     }
   }
@@ -138,23 +130,13 @@ class Router
 
     if (SL) { // SEVERAL_LANGUAGES -- РІЗНІ МОВИ
 
-      //pr1($url);
-
       /** якшо в $url пусто */
-      if ($url === '/') {
+      if ($url === '') {
         self::addRequestParameters();
-
-
-        Helper::redirect(DOMEN . '/' . LANGUAGE .'/');
+        Helper::redirect(DOMEN . '/' . LANGUAGE);
       }
 
-
-
-      pr3(trim($url,'/'));
-
-      if (!in_array(trim($url,'/'), LANGUAGES)) {
-
-        pr1($url.' =1');
+      if (!in_array($url, LANGUAGES)) {
 
         if (strpos($url, '/') !== false) {
 
@@ -173,28 +155,6 @@ class Router
       }
 
 
-
-      if(substr($url, -1) !== '/' and $_GET !== []){
-
-        pr(substr($url, -1));
-        pr($url);
-
-//        $url .= '/?';
-//        foreach ($_GET as $key => $value) {
-//          $url .= $key . '=' . $value .'&';
-//        }
-//        $url = rtrim($url,'&');
-//        Helper::redirect(DOMEN . '/' . LANGUAGE . '/' . $url);
-      }
-
-
-      //self::addRequestParameters();
-
-        //pr1($url . ' 3');
-
-
-
-
     } else { // SEVERAL_LANGUAGES -- РІЗНІ МОВИ
 
 
@@ -205,52 +165,12 @@ class Router
         if (strpos($url, '/') === 0) {
           $url = substr($url, 1);
         }
-
-//                /pr(DOMEN . '/' . $url);
-
         Helper::redirect(DOMEN . '/' . $url);
       }
     }
   }
 
-  /**
-   * @param $url
-   * redirect to request
-   */
-  private static function request($url)
-  {
 
-    pr1($url);
-
-    if (strpos($url, '/') !== false) {
-
-
-      if (strpos($url, '&') !== false) {
-
-        $url_request = explode('&', $url)[0];
-        $url = explode('&', $url)[1];
-
-        pr1($url_request);
-      }
-    }
-
-
-    if (strpos($url, '&') !== false | strpos($url, '=') !== false) {
-      if (strpos($url, 'request') === false) {
-        if (SL) {
-          if (!in_array(explode('/', $url)[1], LANGUAGES)) {
-            $url = explode('/', $url)[1];
-          }
-        }
-
-        if (strpos($url, '&') === 0) {
-          $url = substr($url, 1);
-        }
-
-        Helper::redirect(DOMEN . '/request/' . '&' . $url);
-      }
-    }
-  }
 
   /**
    * SERVER REQUEST_METHOD
@@ -277,34 +197,27 @@ class Router
       $url = substr($_SERVER['REQUEST_URI'], 0, $pos);
     }
 
-    //pr1($url);
-
-    //$url = ltrim($url, '/');
+    $url = trim($url, '/');
 
     return $url;
   }
 
+  public function name($name)
+  {
+    echo $name;
+    return $this;
+  }
   /**
    * @START PROGRAM
    */
   public static function Run()
   {
 
-    //pr1(self::getRoutes());
-    //pr1(self::$url);
-
     self::SeveralLanguages(self::$url);
 
     //self::request($url);
 
     if (self::getRoute(self::$url)) {
-
-
-      // unset optimize
-      //unset($url);
-
-      // https://artkiev.com/blog/php-proxy-detected.htm
-      // Убрать пустые элементы из массива
 
       self::requestMethod();
 
@@ -365,10 +278,7 @@ class Router
 
       $pattern = self::convertPattern("#^" . $pattern . "$#i");
 
-      //pr1($url);
-
       if (preg_match($pattern, $url, $matches)) {
-
 
         foreach ($matches as $k => $v) {
           if (is_string($k)) {
@@ -457,6 +367,45 @@ class Router
     }
 
     return $ip;
+  }
+
+  /**
+   * @param $url
+   * redirect to request
+   */
+  private static function request($url)
+  {
+
+    pr1($url);
+
+    if (strpos($url, '/') !== false) {
+
+
+      if (strpos($url, '&') !== false) {
+
+        $url_request = explode('&', $url)[0];
+        $url = explode('&', $url)[1];
+
+        pr1($url_request);
+      }
+    }
+
+
+    if (strpos($url, '&') !== false | strpos($url, '=') !== false) {
+      if (strpos($url, 'request') === false) {
+        if (SL) {
+          if (!in_array(explode('/', $url)[1], LANGUAGES)) {
+            $url = explode('/', $url)[1];
+          }
+        }
+
+        if (strpos($url, '&') === 0) {
+          $url = substr($url, 1);
+        }
+
+        Helper::redirect(DOMEN . '/request/' . '&' . $url);
+      }
+    }
   }
 
 }
