@@ -119,8 +119,12 @@ class Router
     if ($_GET !== []) {
       $url = '?';
       foreach ($_GET as $key => $value) {
-        $url .= $key . '=' . $value;
+        $url .= $key . '=' . $value .'&';
       }
+      $url = rtrim($url,'&');
+
+      pr1($url);
+
       Helper::redirect(DOMEN . '/' . LANGUAGE . '/' . $url);
     }
   }
@@ -134,15 +138,23 @@ class Router
 
     if (SL) { // SEVERAL_LANGUAGES -- РІЗНІ МОВИ
 
+      //pr1($url);
+
       /** якшо в $url пусто */
-      if ($url === '') {
+      if ($url === '/') {
         self::addRequestParameters();
-        Helper::redirect(DOMEN . '/' . LANGUAGE);
+
+
+        Helper::redirect(DOMEN . '/' . LANGUAGE .'/');
       }
 
-      if (!in_array($url, LANGUAGES)) {
 
-        pr1($url . ' 2');
+
+      pr3(trim($url,'/'));
+
+      if (!in_array(trim($url,'/'), LANGUAGES)) {
+
+        pr1($url.' =1');
 
         if (strpos($url, '/') !== false) {
 
@@ -150,22 +162,38 @@ class Router
             Helper::redirect(DOMEN . '/' . LANGUAGE . '/' . $url);
           }
         } else {
-
           if (in_array(substr($url, 0, 2), LANGUAGES)) {
             $url = substr($url, 2);
           }
-
           if (strpos($url, '&') === 0) {
             $url = substr($url, 1);
           }
-
           Helper::redirect(DOMEN . '/' . LANGUAGE . '/' . $url);
         }
       }
 
-      //pr1($url);
 
-      pr1($url . ' 3');
+
+      if(substr($url, -1) !== '/' and $_GET !== []){
+
+        pr(substr($url, -1));
+        pr($url);
+
+//        $url .= '/?';
+//        foreach ($_GET as $key => $value) {
+//          $url .= $key . '=' . $value .'&';
+//        }
+//        $url = rtrim($url,'&');
+//        Helper::redirect(DOMEN . '/' . LANGUAGE . '/' . $url);
+      }
+
+
+      //self::addRequestParameters();
+
+        //pr1($url . ' 3');
+
+
+
 
     } else { // SEVERAL_LANGUAGES -- РІЗНІ МОВИ
 
@@ -249,7 +277,9 @@ class Router
       $url = substr($_SERVER['REQUEST_URI'], 0, $pos);
     }
 
-    $url = trim($url, '/');
+    //pr1($url);
+
+    //$url = ltrim($url, '/');
 
     return $url;
   }
