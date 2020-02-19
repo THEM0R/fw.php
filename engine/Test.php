@@ -7,19 +7,36 @@ namespace engine;
 class Test
 {
 
-    public static function test1(){
-        echo 'test1';
-        return new static();
-    }
+    public $first;
+    public $second;
+    public $last;
 
-    public static function test2(){
-        echo '<br>test2';
-        return new static();
-    }
-    public function test3(){
-        echo '<br>test3';
+    public $route;
+    public $routes = [];
+
+    public function add($route){
+        $this->route = $route;
         return $this;
     }
+
+    public function first($name = ''){
+        $this->routes[$this->route]['first'] = $name;
+        return $this;
+    }
+
+    public function second($name = ''){
+        $this->routes[$this->route]['second'] = $name;
+        return $this;
+    }
+    public function last($name = ''){
+        $this->routes[$this->route]['last'] = $name;
+        return $this;
+    }
+
+    public function getRoutes(){
+        return $this->routes;
+    }
+
 
 
 }
