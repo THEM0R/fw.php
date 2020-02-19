@@ -112,20 +112,40 @@ class Router
   }
 
   /**
+   * addRequestParameters
+   */
+  private static function addRequestParameters()
+  {
+    if ($_GET !== []) {
+      $url = '?';
+      foreach ($_GET as $key => $value) {
+        $url .= $key . '=' . $value;
+      }
+      Helper::redirect(DOMEN . '/' . LANGUAGE . '/' . $url);
+    }
+  }
+
+  /**
    * @param $url
    * SEVERAL LANGUAGES -- РІЗНІ МОВИ
    */
   private static function SeveralLanguages($url)
   {
 
-    if (SL) {
+    if (SL) { // SEVERAL_LANGUAGES -- РІЗНІ МОВИ
+
       /** якшо в $url пусто */
       if ($url === '') {
+        self::addRequestParameters();
         Helper::redirect(DOMEN . '/' . LANGUAGE);
       }
 
       if (!in_array($url, LANGUAGES)) {
+
+        pr1($url . ' 2');
+
         if (strpos($url, '/') !== false) {
+
           if (strpos($url, '/') !== strlen(LANGUAGE)) {
             Helper::redirect(DOMEN . '/' . LANGUAGE . '/' . $url);
           }
@@ -142,7 +162,13 @@ class Router
           Helper::redirect(DOMEN . '/' . LANGUAGE . '/' . $url);
         }
       }
-    } else {
+
+      //pr1($url);
+
+      pr1($url . ' 3');
+
+    } else { // SEVERAL_LANGUAGES -- РІЗНІ МОВИ
+
 
       if (in_array(substr($url, 0, 2), LANGUAGES)) {
 
@@ -168,11 +194,10 @@ class Router
 
     pr1($url);
 
-    if (strpos($url,   '/') !== false){
+    if (strpos($url, '/') !== false) {
 
 
-
-      if (strpos($url,   '&') !== false){
+      if (strpos($url, '&') !== false) {
 
         $url_request = explode('&', $url)[0];
         $url = explode('&', $url)[1];
@@ -182,7 +207,7 @@ class Router
     }
 
 
-    if (strpos($url,   '&') !== false | strpos($url, '=') !== false) {
+    if (strpos($url, '&') !== false | strpos($url, '=') !== false) {
       if (strpos($url, 'request') === false) {
         if (SL) {
           if (!in_array(explode('/', $url)[1], LANGUAGES)) {
@@ -214,20 +239,19 @@ class Router
     }
   }
 
-  public static function getUrl(){
+  public static function getUrl()
+  {
+    $url = trim($_SERVER['REQUEST_URI']);
 
-    $url = trim($_SERVER['REQUEST_URI'], '/');
-    //$url = $_SERVER['REQUEST_URI'];
+    $pos = strpos($_SERVER['REQUEST_URI'], '?');
 
-    $pos = strpos($url, '?');
-
-    if($pos){
-      $url = substr($url, 0, $pos);
+    if ($pos) {
+      $url = substr($_SERVER['REQUEST_URI'], 0, $pos);
     }
 
-    pr1($url);
+    $url = trim($url, '/');
 
-    return '+++';
+    return $url;
   }
 
   /**
@@ -236,21 +260,18 @@ class Router
   public static function Run()
   {
 
-    pr1(self::$url);
-    $url = trim($_SERVER['REQUEST_URI'], '/');
+    //pr1(self::getRoutes());
+    //pr1(self::$url);
 
-
-
-    self::SeveralLanguages($url);
+    self::SeveralLanguages(self::$url);
 
     //self::request($url);
 
-    if (self::getRoute($url)) {
+    if (self::getRoute(self::$url)) {
 
-//      /pr1($url);
 
       // unset optimize
-      unset($url);
+      //unset($url);
 
       // https://artkiev.com/blog/php-proxy-detected.htm
       // Убрать пустые элементы из массива
@@ -314,7 +335,10 @@ class Router
 
       $pattern = self::convertPattern("#^" . $pattern . "$#i");
 
+      //pr1($url);
+
       if (preg_match($pattern, $url, $matches)) {
+
 
         foreach ($matches as $k => $v) {
           if (is_string($k)) {
