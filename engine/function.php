@@ -1,20 +1,25 @@
 <?php
 
-function pr($arr)
+function pr6($arr)
 {
     echo '<pre>' . print_r($arr, true) . '</pre>';
 }
 
-function pr1($arr)
+function pr7($arr)
 {
     echo '<pre>' . print_r($arr, true) . '</pre>';
     exit;
 }
 
-function pr4($arr)
+function pr1($arr)
 {
   echo '<pre style="font-size: 18px;font-weight: bold;font-family: Tahoma">' . htmlspecialchars( print_r($arr, true) ). '</pre>';
   exit;
+}
+
+function pr($arr)
+{
+  echo '<pre style="font-size: 18px;font-weight: bold;font-family: Tahoma">' . htmlspecialchars( print_r($arr, true) ). '</pre>';
 }
 
 function pr2($arr)

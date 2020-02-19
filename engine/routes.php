@@ -20,7 +20,7 @@ Router::get('request/(url:get)', 'request');
 
 
 
-Router::get('', 'Main','main');
+Router::get("?([a-zA-Z0-9-_=?%&]*)", 'Main','main');
 
 
 /* index */

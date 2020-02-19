@@ -8,6 +8,9 @@ require_once __DIR__ . '/config/define.php';
 
 class Router
 {
+
+  public static $url;
+
   /**
    * @var $routes
    * масив роутов
@@ -157,7 +160,24 @@ class Router
    */
   private static function request($url)
   {
-    if (strpos($url, '&') !== false | strpos($url, '=') !== false) {
+
+    pr1($url);
+
+    if (strpos($url,   '/') !== false){
+
+
+
+      if (strpos($url,   '&') !== false){
+
+        $url_request = explode('&', $url)[0];
+        $url = explode('&', $url)[1];
+
+        pr1($url_request);
+      }
+    }
+
+
+    if (strpos($url,   '&') !== false | strpos($url, '=') !== false) {
       if (strpos($url, 'request') === false) {
         if (SL) {
           if (!in_array(explode('/', $url)[1], LANGUAGES)) {
@@ -189,19 +209,44 @@ class Router
     }
   }
 
+  public static function getUrl(){
+
+    $url = $_SERVER['QUERY_STRING'];
+    //$url = $_SERVER['REQUEST_URI'];
+
+    $pos = strpos($url, '?');
+
+    if($pos){
+      $url = substr($url, 0, $pos);
+    }
+
+    return $url;
+  }
+
   /**
    * @START PROGRAM
    */
   public static function Run()
   {
 
-    $url = rtrim($_SERVER['QUERY_STRING'], '/');
+    //pr1(self::$url);
+
+    //$url = rtrim($_SERVER['QUERY_STRING'], '/');
+    //$url = ltrim($_SERVER['QUERY_STRING'], '/');
+    $url = trim($_SERVER['REQUEST_URI'], '/');
+    //$url = trim($_SERVER['REQUEST_URI']);
+
+    //pr1($url);
+
+
 
     self::SeveralLanguages($url);
 
-    self::request($url);
+    //self::request($url);
 
     if (self::getRoute($url)) {
+
+//      /pr1($url);
 
       // unset optimize
       unset($url);
@@ -266,9 +311,22 @@ class Router
   {
     foreach (self::$routes as $pattern => $route) {
 
-      $pattern = self::convertPattern('#^' . $pattern . '$#i');
+      $pattern = self::convertPattern("#^" . $pattern . "$#i");
+
+      //^(?<language>[a-zA-Z\.\-_%]+)/?([a-zA-Z0-9-_=?%&]*)$
+
+//      pr($url);
+//      pr($pattern);
+//      pr('#^([a-zA-Z\.\-_%]+)/?([a-zA-Z0-9-_=?%&]*)$#i');
+
+      //pr1(preg_match('#^([a-zA-Z\.\-_%]+)/?([a-zA-Z0-9-_=?%&]*)$#i', $url, $matches));
+
+      //var_dump(preg_match($pattern, $url, $matches));
+      //var_dump(preg_match('#^(?<language>[a-zA-Z\.\-_%]+)/?([a-zA-Z0-9-_=?%&]*)$#i', $url, $matches));
 
       if (preg_match($pattern, $url, $matches)) {
+
+        //pr1($pattern);
 
         // <pre>#^(?<language>[a-zA-Z\.\-_%]+)/(?<get>[a-zA-Z0-9\.\-_%=&?]+)$#i</pre>
 
@@ -322,7 +380,7 @@ class Router
       return $pattern;
     }
 
-    return preg_replace_callback('#\((\w+):(\w+)\)#', ['self', 'replacePattern'], $pattern);
+    return preg_replace_callback("#\((\w+):(\w+)\)#", ['self', 'replacePattern'], $pattern);
   }
 
   /**
@@ -332,6 +390,7 @@ class Router
   protected static function replacePattern($matches)
   {
     return '(?<' . $matches[1] . '>' . strtr($matches[2], self::$Patterns) . ')';
+    //return "(<" . $matches[1] . ">" . strtr($matches[2], self::$Patterns) . ")";
   }
 
   /**
