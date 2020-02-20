@@ -56,13 +56,12 @@ class Router
     /**
      * @param $regex
      * @param $controller
-     * @param bool $function
      * @param bool $view
      * @return $this
      */
-    public function get($regex, $controller, $function = false, $view = false)
+    public function get($regex, $controller, $view = false)
     {
-        $this->addRoute($regex, $controller, $view, 'GET', $function);
+        $this->addRoute($regex, $controller, $view, 'GET');
         return $this;
     }
 
@@ -70,13 +69,12 @@ class Router
     /**
      * @param $regex
      * @param $controller
-     * @param bool $function
      * @param bool $view
      * @return $this
      */
-    public function post($regex, $controller, $function = false, $view = false)
+    public function post($regex, $controller, $view = false)
     {
-        $this->addRoute($regex, $controller, $view, 'POST', $function);
+        $this->addRoute($regex, $controller, $view, 'POST');
         return $this;
     }
 
@@ -94,9 +92,8 @@ class Router
      * @param $route
      * @param bool $view
      * @param string $method
-     * @param bool $function
      */
-    public function addRoute($pattern, $route, $view = false, $method = 'GET', $function = false)
+    public function addRoute($pattern, $route, $view = false, $method = 'GET')
     {
         if (is_string($route)) {
 
@@ -109,8 +106,7 @@ class Router
                 $this->routes[$pattern] = [
                     'controller' => $route,
                     'view' => $view,
-                    'method' => ['name' => $method],
-                    'function' => $function
+                    'method' => ['name' => $method]
                 ];
 
             } else {
@@ -121,8 +117,7 @@ class Router
                     'controller' => $route[0],
                     'action' => $route[1],
                     'view' => $view,
-                    'method' => ['name' => $method],
-                    'function' => $function
+                    'method' => ['name' => $method]
                 ];
             }
         } // is_string
@@ -398,9 +393,6 @@ class Router
      */
     private function request($url)
     {
-
-        pr1($url);
-
         if (strpos($url, '/') !== false) {
 
 
@@ -409,7 +401,6 @@ class Router
                 $url_request = explode('&', $url)[0];
                 $url = explode('&', $url)[1];
 
-                pr1($url_request);
             }
         }
 

@@ -26,7 +26,7 @@ $Router->get('request/(url:get)', 'request', function (){
 
 
 //Router->get("?([a-zA-Z0-9-_=?%&]*)", 'Main','main');
-$Router->get('', 'Main','main')->name('home');
+$Router->get('', 'Main','')->name('home');
 //$Router->post('(url:get)/ar', 'Main','main')->name('home');
 
 
