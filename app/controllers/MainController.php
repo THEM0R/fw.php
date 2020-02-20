@@ -15,6 +15,7 @@ class MainController extends AppController
 <input type='submit'>
 </form>";
         pr1($route);
+//        exit;
 
     }
 

@@ -6,7 +6,10 @@
             "email": "the.mor.ua@gmail.com"
         }
     ],
-    "require": {},
+    "require": {
+        "symfony/debug": "^4.4",
+        "symfony/var-dumper": "^4.4"
+    },
     "autoload": {
         "psr-4": {
             "app\\": "app/",

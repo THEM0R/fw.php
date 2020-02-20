@@ -4,7 +4,11 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 require_once __DIR__ . '/../engine/config/define.php';
 
-
+// Debug
+// https://packagist.org/packages/symfony/debug
+use Symfony\Component\Debug\Debug;
+Debug::enable();
+// Debug
 
 //$app = new \engine\Test();
 //
