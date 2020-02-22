@@ -1,6 +1,9 @@
 <?php
 require_once __DIR__ . '/../engine/function.php';
+// function
 require_once __DIR__ . '/../vendor/autoload.php';
+// init
+require_once __DIR__ . '/../engine/init.php';
 
 require_once __DIR__ . '/../engine/config/define.php';
 
@@ -10,23 +13,6 @@ use Symfony\Component\Debug\Debug;
 Debug::enable();
 // Debug
 
-//$app = new \engine\Test();
-//
-//$app->add('category')->first('film')->second('(url:22)')->last('cat');
-//$app->add('product')->first(11)->second(22)->last(33);
-//$app->add('home')->first(1)->second(2)->last(3);
-//$app->add('homes')->first(12)->second(23)->last(34);
-//$app->add('hom')->second(12)->first(23)->last(34);
-//
-//
-//pr1($app->getRoutes());
-//
-//exit;
-//
 $Router = new \engine\Router();
 require_once __DIR__ . '/../engine/routes.php';
-
-//pr1($Router->getRoutes());
-
-
 $Router->Run();
