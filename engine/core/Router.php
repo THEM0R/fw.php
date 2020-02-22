@@ -1,19 +1,18 @@
 <?php
-
-
 namespace core;
-
 use engine\helper\Helper;
-
-require_once __DIR__ . '/../config/define.php';
-
+use engine\module\Request;
+use lang\Language;
 
 class Router
 {
 
     public function __construct()
     {
-        $this->url = $this->getUrl();
+
+        //pr1(SL);
+
+        $this->url = Request::getUrl();
     }
 
     private $url;
@@ -38,21 +37,7 @@ class Router
         'get' => '[a-zA-Z0-9\.\-_%=&?]*'
     ];
 
-    /**
-     * @param $pattern
-     * @return string
-     */
-    private function pattern($pattern)
-    {
-        if (SL) {
-            if ($pattern == '') {
-                $pattern = '(language:str)' . $pattern;
-            } else {
-                $pattern = '(language:str)/' . $pattern;
-            }
-        }
-        return $pattern;
-    }
+
 
 
     /**
@@ -99,7 +84,7 @@ class Router
     {
         if (is_string($route)) {
 
-            $pattern = $this->pattern($pattern);
+            $pattern = Language::LangToPattern($pattern);
 
             $this->routeName = $pattern;
 
@@ -125,102 +110,6 @@ class Router
         } // is_string
     }
 
-    /**
-     * addRequestParameters
-     */
-    private function addRequestParameters()
-    {
-        if ($_GET !== []) {
-            $url = '?';
-            foreach ($_GET as $key => $value) {
-                $url .= $key . '=' . $value . '&';
-            }
-            $url = rtrim($url, '&');
-
-            Helper::redirect(DOMEN . '/' . LANGUAGE . '/' . $url);
-        }
-    }
-
-    /**
-     * @param $url
-     * SEVERAL LANGUAGES -- РІЗНІ МОВИ
-     */
-    private function SeveralLanguages($url)
-    {
-
-        if (SL) { // SEVERAL_LANGUAGES -- РІЗНІ МОВИ
-
-            /** якшо в $url пусто */
-            if ($url === '') {
-                $this->addRequestParameters();
-                Helper::redirect(DOMEN . '/' . LANGUAGE);
-            }
-
-            if (!in_array($url, LANGUAGES)) {
-
-                if (strpos($url, '/') !== false) {
-
-                    if (strpos($url, '/') !== strlen(LANGUAGE)) {
-                        Helper::redirect(DOMEN . '/' . LANGUAGE . '/' . $url);
-                    }
-                } else {
-                    if (in_array(substr($url, 0, 2), LANGUAGES)) {
-                        $url = substr($url, 2);
-                    }
-                    if (strpos($url, '&') === 0) {
-                        $url = substr($url, 1);
-                    }
-                    Helper::redirect(DOMEN . '/' . LANGUAGE . '/' . $url);
-                }
-            }
-
-
-        } else { // SEVERAL_LANGUAGES -- РІЗНІ МОВИ
-
-
-            if (in_array(substr($url, 0, 2), LANGUAGES)) {
-
-                $url = substr($url, 2);
-
-                if (strpos($url, '/') === 0) {
-                    $url = substr($url, 1);
-                }
-                Helper::redirect(DOMEN . '/' . $url);
-            }
-        }
-    }
-
-
-    /**
-     * SERVER REQUEST_METHOD
-     */
-    private function requestMethod()
-    {
-        if ($this->route['method']['name'] !== $_SERVER['REQUEST_METHOD']) {
-            Helper::notFound('REQUEST_METHOD не співпадає');
-        }
-        if ($this->route['method']['name'] == 'GET') {
-            $this->route['method']['data'] = Helper::array_clear($_GET);
-        } else if ($this->route['method']['name'] == 'POST') {
-            $this->route['method']['data'] = Helper::array_clear($_POST);
-        }
-    }
-
-    public function getUrl()
-    {
-        $url = trim($_SERVER['REQUEST_URI']);
-
-        $pos = strpos($_SERVER['REQUEST_URI'], '?');
-
-        if ($pos) {
-            $url = substr($_SERVER['REQUEST_URI'], 0, $pos);
-        }
-
-        $url = trim($url, '/');
-
-        return $url;
-    }
-
 
 
     /**
@@ -228,7 +117,7 @@ class Router
      */
     public function Run()
     {
-        $this->severalLanguages($this->url);
+        Language::langRedirect($this->url);
 
         if ($this->getRoute($this->url)) {
 
@@ -236,7 +125,7 @@ class Router
 
             //$this->route['function']->__invoke();
 
-            $this->requestMethod();
+            Request::addMethod($this->route);
 
             $controller = 'app\\controllers\\' . $this->route['controller'] . 'Controller';
 
@@ -389,39 +278,6 @@ class Router
         return $ip;
     }
 
-    /**
-     * @param $url
-     * redirect to request
-     */
-    private function request($url)
-    {
-        if (strpos($url, '/') !== false) {
 
-
-            if (strpos($url, '&') !== false) {
-
-                $url_request = explode('&', $url)[0];
-                $url = explode('&', $url)[1];
-
-            }
-        }
-
-
-        if (strpos($url, '&') !== false | strpos($url, '=') !== false) {
-            if (strpos($url, 'request') === false) {
-                if (SL) {
-                    if (!in_array(explode('/', $url)[1], LANGUAGES)) {
-                        $url = explode('/', $url)[1];
-                    }
-                }
-
-                if (strpos($url, '&') === 0) {
-                    $url = substr($url, 1);
-                }
-
-                Helper::redirect(DOMEN . '/request/' . '&' . $url);
-            }
-        }
-    }
 
 }
