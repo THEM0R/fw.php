@@ -99,7 +99,8 @@ abstract class Controller
       $theme = null;
     }
 
-    $configs = $this->configs;
+//      $configs = $this->configs;
+      $configs = 'configs';
 
     $meta = $this->meta;
     $route = $this->route;

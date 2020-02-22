@@ -9,9 +9,7 @@ class Router
 
     public function __construct()
     {
-
         //pr1(SL);
-
         $this->url = Request::getUrl();
     }
 
@@ -117,17 +115,25 @@ class Router
      */
     public function Run()
     {
+
+//        pr1($this->url);
+//
+//        if($this->url === 'admin'){
+//            Helper::redirect(DOMEN . '/admin');
+//        }
+
         Language::langRedirect($this->url);
 
         if ($this->getRoute($this->url)) {
 
-            //pr3($this->route['function']);
-
-            //$this->route['function']->__invoke();
-
             Request::addMethod($this->route);
 
-            $controller = 'app\\controllers\\' . $this->route['controller'] . 'Controller';
+            if($this->route['controller'] === 'Admin'){
+                $this->route['controller'] = 'Main';
+                $controller = 'engine\\admin\\controllers\\' . $this->route['controller'] . 'Controller';
+            }else{
+                $controller = 'app\\controllers\\' . $this->route['controller'] . 'Controller';
+            }
 
             if (class_exists($controller)) {
 

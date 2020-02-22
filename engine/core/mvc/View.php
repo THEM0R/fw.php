@@ -1,8 +1,6 @@
 <? namespace mvc;
 
-use engine\Helper;
-use lib\App;
-use lang\Language;
+use module\Helper;
 
 class View
 {
