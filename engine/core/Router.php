@@ -1,9 +1,11 @@
 <?php
 
 
-namespace engine;
+namespace core;
 
-require_once __DIR__ . '/config/define.php';
+use engine\helper\Helper;
+
+require_once __DIR__ . '/../config/define.php';
 
 
 class Router

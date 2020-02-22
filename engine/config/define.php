@@ -2,28 +2,19 @@
 
 // define
 define('REQUEST', 'http');
-
 define('URI', rtrim($_SERVER['QUERY_STRING'], '/'));
 define('DOMEN', REQUEST . '://' . $_SERVER['HTTP_HOST']);
-
 define('THEME', 'default');
 
 // LANGUAGE
-
 define('SL', 1); // SEVERAL_LANGUAGES -- РІЗНІ МОВИ
-
-
 define('LANGUAGES', [
     1 => 'ua',
     2 => 'ru'
 ]);
-
 if ($_SERVER) {
-
   if ($_SERVER['HTTP_ACCEPT_LANGUAGE']) {
-
     $HAL = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
-
     if ($HAL === 'uk') {
       define('LANGUAGE', LANGUAGES[1]);
     } else {
@@ -31,6 +22,7 @@ if ($_SERVER) {
     }
   }
 }
+// LANGUAGE
 
 
 //pr($_SERVER['HTTP_ACCEPT_LANGUAGE']);

@@ -37,7 +37,7 @@ class View
         $this->controller   = Helper::lowerCamelCase($route['controller']);
         $this->theme        = $theme ?: THEME;
         $this->view         = $view;
-        //$this->script       = Helper::$config['script'];
+        //$this->script       = helper::$config['script'];
         $this->meta         = $meta;
         // code
 
