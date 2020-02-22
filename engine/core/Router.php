@@ -1,8 +1,8 @@
 <?php
 namespace core;
-use engine\helper\Helper;
-use engine\module\Request;
-use lang\Language;
+use module\Helper;
+use module\Request;
+use module\Language;
 
 class Router
 {

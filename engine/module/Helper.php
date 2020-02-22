@@ -1,7 +1,7 @@
 <?php
 
 
-namespace engine\helper;
+namespace module;
 
 
 class Helper

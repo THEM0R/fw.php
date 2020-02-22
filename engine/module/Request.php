@@ -1,10 +1,7 @@
 <?php
 
-
-namespace engine\module;
-
-
-use engine\helper\Helper;
+namespace module;
+use module\Helper;
 
 class Request
 {

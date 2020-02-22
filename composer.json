@@ -15,8 +15,8 @@
             "app\\": "app/",
             "engine\\": "engine/",
             "core\\": "engine/core/",
-            "lang\\": "engine/language/",
-            "mvc\\": "engine/mvc/"
+            "module\\": "engine/module/",
+            "mvc\\": "engine/core/mvc/"
         }
     }
 }

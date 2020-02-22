@@ -1,7 +1,7 @@
 <?php
-namespace lang;
-use engine\helper\Helper;
-use engine\module\Request;
+namespace module;
+use module\Helper;
+use module\Request;
 
 class Language
 {
