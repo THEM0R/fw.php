@@ -13,6 +13,6 @@ class AppController extends Controller
     {
         parent::__construct($model, $route);
 
-        //pr($route);
+        //pr1($route);
     }
 }

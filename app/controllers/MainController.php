@@ -10,6 +10,11 @@ class MainController extends AppController
     public function indexAction($model, $route)
     {
 
+
+        //$this->getView();
+
+        //exit();
+
 //        echo "<form method='post' action='/posts1/asdsad/test12'>
 //<input type='text' name='test1'>
 //<input type='submit'>

@@ -1,5 +1,7 @@
 <?php
+
 namespace core;
+
 use module\Helper;
 use module\Request;
 use module\Language;
@@ -34,8 +36,6 @@ class Router
         'all' => '[a-zA-Z0-9\.\-_%]+',
         'get' => '[a-zA-Z0-9\.\-_%=&?]*'
     ];
-
-
 
 
     /**
@@ -109,7 +109,6 @@ class Router
     }
 
 
-
     /**
      * @START PROGRAM
      */
@@ -126,52 +125,109 @@ class Router
 
         if ($this->getRoute($this->url)) {
 
-            Request::addMethod($this->route);
+            $this->route = Request::addMethod($this->route);
 
-            if($this->route['controller'] === 'Admin'){
+
+            if ($this->route['controller'] === 'Admin') {
+
+                // *
+                // if controller admin
+                // *
+
                 $this->route['controller'] = 'Main';
+
                 $controller = 'engine\\admin\\controllers\\' . $this->route['controller'] . 'Controller';
-            }else{
-                $controller = 'app\\controllers\\' . $this->route['controller'] . 'Controller';
-            }
 
-            if (class_exists($controller)) {
+                if (class_exists($controller)) {
 
-                // модель
-                $model = 'app\\models\\' . $this->route['controller'] . 'Model';
-                if (class_exists($model)) {
-                    $modelObject = new $model($this->route);
+                    // модель
+                    $model = 'engine\\admin\\models\\' . $this->route['controller'] . 'Model';
+                    if (class_exists($model)) {
+                        $modelObject = new $model($this->route);
 
-                    // unset optimize
-                    unset($model);
+                        // unset optimize
+                        unset($model);
 
-                } else {
-                    $modelObject = null;
-                }
+                    } else {
+                        $modelObject = null;
+                    }
 
-                $ControllerObject = new $controller($modelObject, $this->route);
-                $action = Helper::lowerCamelCase($this->route['action']) . 'Action';
 
-                // unset optimize
-                //unset($controller);
-
-                if (method_exists($ControllerObject, $action)) {
-
-                    $ControllerObject->$action($modelObject, $this->route);
-                    $ControllerObject->getView();
+                    $ControllerObject = new $controller($modelObject, $this->route);
+                    $action = Helper::lowerCamelCase($this->route['action']) . 'Action';
 
                     // unset optimize
-                    unset($modelObject);
-                    unset($ControllerObject);
-                    //unset($action);
+                    //unset($controller);
+
+                    if (method_exists($ControllerObject, $action)) {
+
+                        $ControllerObject->$action($modelObject, $this->route);
+                        $ControllerObject->getView(ADMIN);
+
+                        // unset optimize
+                        unset($modelObject);
+                        unset($ControllerObject);
+                        //unset($action);
+
+                    } else {
+                        Helper::notFound('no method in ' . $controller . ' ' . $action);
+                    }
 
                 } else {
-                    Helper::notFound('no method in ' . $controller . ' ' . $action);
+                    Helper::notFound('no controller ' . $controller);
                 }
+
 
             } else {
-                Helper::notFound('no controller ' . $controller);
+
+                // *
+                // if controller no admin
+                // *
+
+                $controller = 'app\\controllers\\' . $this->route['controller'] . 'Controller';
+
+                if (class_exists($controller)) {
+
+                    // модель
+                    $model = 'app\\models\\' . $this->route['controller'] . 'Model';
+                    if (class_exists($model)) {
+                        $modelObject = new $model($this->route);
+
+                        // unset optimize
+                        unset($model);
+
+                    } else {
+                        $modelObject = null;
+                    }
+
+
+                    $ControllerObject = new $controller($modelObject, $this->route);
+                    $action = Helper::lowerCamelCase($this->route['action']) . 'Action';
+
+                    // unset optimize
+                    //unset($controller);
+
+                    if (method_exists($ControllerObject, $action)) {
+
+                        $ControllerObject->$action($modelObject, $this->route);
+                        $ControllerObject->getView(APP);
+
+                        // unset optimize
+                        unset($modelObject);
+                        unset($ControllerObject);
+                        //unset($action);
+
+                    } else {
+                        Helper::notFound('no method in ' . $controller . ' ' . $action);
+                    }
+
+                } else {
+                    Helper::notFound('no controller ' . $controller);
+                }
+
             }
+
+
 
 
         } else {
@@ -245,7 +301,7 @@ class Router
         }
 
 //        return preg_replace_callback("#\((\w+):(\w+)\)#", ['self', 'replacePattern'], $pattern);
-        return preg_replace_callback("#\((\w+):(\w+)\)#", [$this,'replacePattern'], $pattern);
+        return preg_replace_callback("#\((\w+):(\w+)\)#", [$this, 'replacePattern'], $pattern);
     }
 
     /**
@@ -283,7 +339,6 @@ class Router
 
         return $ip;
     }
-
 
 
 }

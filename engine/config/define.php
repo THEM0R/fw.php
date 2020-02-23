@@ -10,10 +10,11 @@ define('THEME', 'default');
 
 // dir
 define('DIR',     dirname( dirname(__DIR__) ) );
-define('FW',      DIR.'/framework');
-define('ENGINE',  FW.'/engine/' );
-define('CORE',    FW.'/engine/core/' );
+define('FW',      DIR.'/engine');
+define('ENGINE',  FW );
+define('CORE',    FW.'core/' );
 define('APP',     dirname(DIR).'/app' );
+define('ADMIN',   ENGINE.'/admin' );
 define('LIB',     FW.'/libs/' );
 define('CONF',    FW.'/config/' );
 define('CONF_DB', FW.'/config/db/' );
