@@ -7,11 +7,30 @@ namespace module;
 class Helper
 {
 
-  public static function array_clear($array){
+  public static function Msg($type, $message)
+  {
 
-    if($array != []){
+    $language = require CONF.'ini/language.php';
 
-      $new_array = array_filter($array, function($element) {
+    $msg = '';
+
+    if ($type == 0 or $type == 'error') {
+
+      $msg = $language['error'][$message];
+
+    } elseif ($type == 1 or $type == 'success') {
+      $msg = $language['success'][$message];
+    }
+
+    return $msg;
+  }
+
+  public static function array_clear($array)
+  {
+
+    if ($array != []) {
+
+      $new_array = array_filter($array, function ($element) {
         return !empty($element);
       });
 

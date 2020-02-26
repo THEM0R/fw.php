@@ -13,7 +13,7 @@ define('DIR',     dirname( dirname(__DIR__) ) );
 define('FW',      DIR.'/engine');
 define('ENGINE',  FW );
 define('CORE',    FW.'core/' );
-define('APP',     dirname(DIR).'/app' );
+define('APP',     DIR.'/app' );
 define('ADMIN',   ENGINE.'/admin' );
 define('LIB',     FW.'/libs/' );
 define('CONF',    FW.'/config/' );

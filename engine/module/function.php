@@ -1,5 +1,24 @@
 <?php
 
+function msg($type, $message)
+{
+
+  $language = require CONF.'ini/language.php';
+
+  $msg = '';
+
+  if ($type == 0 or $type == 'error') {
+
+    $msg = $language['error'][$message];
+
+  } elseif ($type == 1 or $type == 'success') {
+    $msg = $language['success'][$message];
+  }
+
+  return $msg;
+}
+
+
 function pr6($arr)
 {
     echo '<pre>' . print_r($arr, true) . '</pre>';

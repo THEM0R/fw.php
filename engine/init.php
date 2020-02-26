@@ -10,11 +10,18 @@ ini_set('serialize_precision', 'on');
 // init
 error_reporting(-1);
 session_start();
+
 // define
+define('RELEASE',0);
 require_once __DIR__ . '/config/define.php';
+require_once __DIR__ . '/config/ini/language.php';
 
 // Debug
 // https://packagist.org/packages/symfony/debug
 use Symfony\Component\Debug\Debug;
 Debug::enable();
 // Debug
+
+
+
+
