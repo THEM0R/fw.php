@@ -101,7 +101,10 @@ abstract class Controller
         unset($route);
         unset($all);
 
-        $view->rendering($array);
+        //pr1($directory);
+
+
+        $view->rendering($directory, $array);
 
         // unset optimize
         unset($view);

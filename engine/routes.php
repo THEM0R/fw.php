@@ -1,3 +1,3 @@
 <?php
 
-$Router->get('admin', 'Admin','')->name('home');
+$Router->get('admin', 'Admin','main')->name('home');

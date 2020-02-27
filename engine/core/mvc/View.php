@@ -57,7 +57,7 @@ class View
   }
 
 
-  public function rendering($vars)
+  public function rendering($directory, $vars)
   {
 
     $script = $this->script;
@@ -82,43 +82,37 @@ class View
     // unset optimize
     unset($vars);
 
-    $file_view = APP . '/views/' . $this->theme . '/' . Helper::lowerCamelCase($this->view) . '.html';
+    $view = $directory . '/views/' . $this->theme . '/' . Helper::lowerCamelCase($this->view) . '.html';
 
-    ob_start();
+    ob_start(); // старт буферизации
 
-    if (is_file($file_view)) {
-      require $file_view;
+    if (is_file($view)) {
+      require $view;
     } else {
       if (RELEASE) {
         Helper::NotFound();
       } else {
-
-        $file = '';
-
-        if (strpos($file_view, '/') !== false) {
-          $file = ' ' . substr($file_view, strpos($file_view, '/'));
+        if (strpos($view, '/') !== false) {
+          $view = ' ' . substr($view, strpos($view, '/'));
         }
-
-        Helper::NotFound(msg(0, 2) . $file);
+        Helper::NotFound(msg(0, 2) . $view);
       }
 
     }
 
     // unset optimize
-    unset($file_view);
+    unset($view);
 
     $content = ob_get_clean();
 
-    //pr1($this->theme);
-
     if ($this->theme !== false) {
 
-      $theme = APP . '/views/' . $this->theme . '/index.html';
+      $theme = $directory . '/views/' . $this->theme . '/index.html';
 
       if (is_file($theme)) {
         require $theme;
       } else {
-        Helper::NotFound(msg(0,2) .''. $theme);
+        Helper::NotFound(msg(0, 2) . '' . $theme);
       }
       // unset optimize
       unset($theme);
