@@ -1,19 +1,30 @@
 <?php
 
 namespace engine\admin\controllers;
+
 use app\controllers\AppController;
+
 
 class MainController extends AppController
 {
 
-    public function indexAction($model, $route){
+    private $test = [
+        'test1' => 01,
+        'test2' => 02,
+        'test3' => 03,
+    ];
 
-        echo 'admin';
-//        /pr1($route);
+    public function indexAction($model, $route)
+    {
 
         $admin = 'SlavikMor';
+        $admin2 = 'SlavikMor2';
+
+        pr1($this->c($admin));
+        $this->renderTest('admin,admin2');
 
         $this->render(compact('admin'));
     }
+
 
 }

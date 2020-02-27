@@ -8,7 +8,8 @@ use module\Helper;
 abstract class Controller
 {
 
-    public function test1(){
+    public function test1()
+    {
         echo '++1';
     }
 
@@ -41,8 +42,6 @@ abstract class Controller
     public $vars = null;
 
     public $method = null;
-
-
 
 
     public function __construct($model, $route)
@@ -110,6 +109,39 @@ abstract class Controller
         unset($view);
         unset($array);
     }
+
+//    public function varName( $v = null ) {
+//
+//        if(!$v) return false;
+//
+//        $trace = debug_backtrace();
+//        $vLine = file( __FILE__ );
+//        $fLine = $vLine[ $trace[0]['line'] - 1 ];
+//        preg_match( "#\\$(\w+)#", $fLine, $match );
+//
+//        return $match;
+//    }
+
+    public function c($render){
+        return compact($render);
+    }
+
+    public function renderTest($render)
+{
+
+    $arr1 = $this->route['controller'] . 'controller';
+    $aps = new \engine\admin\controllers\MainController(false, $this->route);
+
+    $aps->indexAction(false, $this->route);
+
+    pr($render);
+    pr1($this->route);
+
+
+    $arr = compact($render);
+
+    pr1(extract($arr));
+}
 
     public function render($vars = null)
     {

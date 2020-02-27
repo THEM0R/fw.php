@@ -19,18 +19,18 @@ function msg($type, $message)
 }
 
 
-function pr6($arr)
+function pr6($arr = null)
 {
     echo '<pre>' . print_r($arr, true) . '</pre>';
 }
 
-function pr7($arr)
+function pr7($arr = null)
 {
     echo '<pre>' . print_r($arr, true) . '</pre>';
     exit;
 }
 
-function pr1($arr)
+function pr1($arr = null)
 {
   dump($arr);
 
@@ -38,21 +38,38 @@ function pr1($arr)
   exit;
 }
 
-function pr($arr)
+function pr($arr = null)
 {
 
   dump($arr);
   //echo '<pre style="font-size: 18px;font-weight: bold;font-family: Tahoma">' . htmlspecialchars( print_r($arr, true) ). '</pre>';
 }
 
-function pr2($arr)
+function pr2($arr = null)
 {
     echo '<pre>' , var_dump($arr) , '</pre>';
 }
 
-function pr3($arr)
+function pr3($arr = null)
 {
     echo '<pre>' , var_dump($arr) , '</pre>';
     exit;
+}
+
+function varName( $v = null ) {
+
+    if(!$v) return false;
+
+    $trace = debug_backtrace();
+
+
+
+    $vLine = file( __FILE__ );
+    $fLine = $vLine[ $trace[0]['line'] - 1 ];
+
+
+    preg_match( "#\\$(\w+)#", $fLine, $match );
+
+    pr1($match);
 }
 
