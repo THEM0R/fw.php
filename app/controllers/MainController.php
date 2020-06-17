@@ -11,7 +11,10 @@ class MainController extends AppController
     {
 
 
-        //$this->getView();
+
+
+      $this->getView();
+      pr1($route);
 
         //exit();
 
@@ -21,7 +24,7 @@ class MainController extends AppController
 //</form>";
 //        pr1($route);
 ////        exit;
-        $this->render(compact(''));
+        //$this->render(compact(''));
     }
 
     public function testAction($model, $route)

@@ -9,111 +9,111 @@ use module\Language;
 class Router
 {
 
-    public function __construct()
-    {
-        //pr1(SL);
-        $this->url = Request::getUrl();
-    }
+  public function __construct()
+  {
+    //pr1(SL);
+    $this->url = Request::getUrl();
+  }
 
-    private $url;
+  private $url;
 
-    /**
-     * @var $routes
-     * масив роутов
-     */
-    protected $routes = [];
-    protected $routeName;
+  /**
+   * @var $routes
+   * масив роутов
+   */
+  public $routes = [];
+  public $routeName;
 
-    /**
-     * @var $route
-     * масив текущего роута роута
-     */
-    protected $route = [];
+  /**
+   * @var $route
+   * масив текущего роута роута
+   */
+  protected $route = [];
 
-    protected $Patterns = [
-        'int' => '[0-9]+',
-        'str' => '[a-zA-Z\.\-_%]+',
-        'all' => '[a-zA-Z0-9\.\-_%]+',
-        'get' => '[a-zA-Z0-9\.\-_%=&?]*'
-    ];
-
-
-    /**
-     * @param $regex
-     * @param $controller
-     * @param bool $view
-     * @return $this
-     */
-    public function get($regex, $controller, $view = false)
-    {
-        $this->addRoute($regex, $controller, $view, 'GET');
-        return $this;
-    }
+  protected $Patterns = [
+    'int' => '[0-9]+',
+    'str' => '[a-zA-Z\.\-_%]+',
+    'all' => '[a-zA-Z0-9\.\-_%]+',
+    'get' => '[a-zA-Z0-9\.\-_%=&?]*'
+  ];
 
 
-    /**
-     * @param $regex
-     * @param $controller
-     * @param bool $view
-     * @return $this
-     */
-    public function post($regex, $controller, $view = false)
-    {
-        $this->addRoute($regex, $controller, $view, 'POST');
-        return $this;
-    }
-
-    public function name($name = '')
-    {
-
-        //pr1($this->routeName);
-
-        $this->routes[$this->routeName]['name'] = $name;
-        return $this;
-    }
-
-    /**
-     * @param $pattern
-     * @param $route
-     * @param bool $view
-     * @param string $method
-     */
-    public function addRoute($pattern, $route, $view = false, $method = 'GET')
-    {
-        if (is_string($route)) {
-
-            $pattern = Language::LangToPattern($pattern);
-
-            $this->routeName = $pattern;
-
-            if (strpos($route, ':') === false) {
-
-                $this->routes[$pattern] = [
-                    'controller' => $route,
-                    'view' => $view,
-                    'method' => ['name' => $method]
-                ];
-
-            } else {
-
-                $route = explode(':', $route);
-
-                $this->routes[$pattern] = [
-                    'controller' => $route[0],
-                    'action' => $route[1],
-                    'view' => $view,
-                    'method' => ['name' => $method]
-                ];
-            }
-        } // is_string
-    }
+  /**
+   * @param $regex
+   * @param $controller
+   * @param bool $view
+   * @return $this
+   */
+  public function get($regex, $controller, $view = false)
+  {
+    $this->addRoute($regex, $controller, $view, 'GET');
+    return $this;
+  }
 
 
-    /**
-     * @START PROGRAM
-     */
-    public function Run()
-    {
+  /**
+   * @param $regex
+   * @param $controller
+   * @param bool $view
+   * @return $this
+   */
+  public function post($regex, $controller, $view = false)
+  {
+    $this->addRoute($regex, $controller, $view, 'POST');
+    return $this;
+  }
+
+  public function name($name = '')
+  {
+
+    //pr1($this->routeName);
+
+    $this->routes[$this->routeName]['name'] = $name;
+    return $this;
+  }
+
+  /**
+   * @param $pattern
+   * @param $route
+   * @param bool $view
+   * @param string $method
+   */
+  public function addRoute($pattern, $route, $view = false, $method = 'GET')
+  {
+    if (is_string($route)) {
+
+      $pattern = Language::LangToPattern($pattern);
+
+      $this->routeName = $pattern;
+
+      if (strpos($route, ':') === false) {
+
+        $this->routes[$pattern] = [
+          'controller' => $route,
+          'view' => $view,
+          'method' => ['name' => $method]
+        ];
+
+      } else {
+
+        $route = explode(':', $route);
+
+        $this->routes[$pattern] = [
+          'controller' => $route[0],
+          'action' => $route[1],
+          'view' => $view,
+          'method' => ['name' => $method]
+        ];
+      }
+    } // is_string
+  }
+
+
+  /**
+   * @START PROGRAM
+   */
+  public function Run()
+  {
 
 //        pr1($this->url);
 //
@@ -121,224 +121,222 @@ class Router
 //            Helper::redirect(DOMEN . '/admin');
 //        }
 
-        Language::langRedirect($this->url);
+    Language::langRedirect($this->url);
 
-        if ($this->getRoute($this->url)) {
+    if ($this->getRoute($this->url)) {
 
-            $this->route = Request::addMethod($this->route);
-
-
-            if ($this->route['controller'] === 'Admin') {
-
-                // *
-                // if controller admin
-                // *
-
-                $this->route['controller'] = 'Main';
-
-                $controller = 'engine\\admin\\controllers\\' . $this->route['controller'] . 'Controller';
-
-                if (class_exists($controller)) {
-
-                    // модель
-                    $model = 'engine\\admin\\models\\' . $this->route['controller'] . 'Model';
-                    if (class_exists($model)) {
-                        $modelObject = new $model($this->route);
-
-                        // unset optimize
-                        unset($model);
-
-                    } else {
-                        $modelObject = null;
-                    }
+      $this->route = Request::addMethod($this->route);
 
 
-                    $ControllerObject = new $controller($modelObject, $this->route);
-                    $action = Helper::lowerCamelCase($this->route['action']) . 'Action';
+      if ($this->route['controller'] === 'Admin') {
 
-                    // unset optimize
-                    //unset($controller);
+        // *
+        // if controller admin
+        // *
 
-                    if (method_exists($ControllerObject, $action)) {
+        $this->route['controller'] = 'Main';
 
-                        $ControllerObject->$action($modelObject, $this->route);
-                        $ControllerObject->getView(ADMIN);
+        $controller = 'engine\\admin\\controllers\\' . $this->route['controller'] . 'Controller';
 
-                        // unset optimize
-                        unset($modelObject);
-                        unset($ControllerObject);
-                        //unset($action);
+        if (class_exists($controller)) {
 
-                    } else {
-                        Helper::notFound('no method in ' . $controller . ' ' . $action);
-                    }
+          // модель
+          $model = 'engine\\admin\\models\\' . $this->route['controller'] . 'Model';
+          if (class_exists($model)) {
+            $modelObject = new $model($this->route);
 
-                } else {
-                    Helper::notFound('no controller ' . $controller);
-                }
+            // unset optimize
+            unset($model);
 
-
-            } else {
-
-                // *
-                // if controller no admin
-                // *
-
-                $controller = 'app\\controllers\\' . $this->route['controller'] . 'Controller';
-
-                if (class_exists($controller)) {
-
-                    // модель
-                    $model = 'app\\models\\' . $this->route['controller'] . 'Model';
-                    if (class_exists($model)) {
-                        $modelObject = new $model($this->route);
-
-                        // unset optimize
-                        unset($model);
-
-                    } else {
-                        $modelObject = null;
-                    }
+          } else {
+            $modelObject = null;
+          }
 
 
-                    $ControllerObject = new $controller($modelObject, $this->route);
-                    $action = Helper::lowerCamelCase($this->route['action']) . 'Action';
+          $ControllerObject = new $controller($modelObject, $this->route);
+          $action = Helper::lowerCamelCase($this->route['action']) . 'Action';
 
-                    // unset optimize
-                    //unset($controller);
+          // unset optimize
+          //unset($controller);
 
-                    if (method_exists($ControllerObject, $action)) {
+          if (method_exists($ControllerObject, $action)) {
 
-                        $ControllerObject->$action($modelObject, $this->route);
-                        $ControllerObject->getView(APP);
+            $ControllerObject->$action($modelObject, $this->route);
+            $ControllerObject->getView(ADMIN);
 
-                        // unset optimize
-                        unset($modelObject);
-                        unset($ControllerObject);
-                        //unset($action);
+            // unset optimize
+            unset($modelObject);
+            unset($ControllerObject);
+            //unset($action);
 
-                    } else {
-                        Helper::notFound('no method in ' . $controller . ' ' . $action);
-                    }
-
-                } else {
-                    Helper::notFound('no controller ' . $controller);
-                }
-
-            }
-
-
-
+          } else {
+            Helper::notFound('no method in ' . $controller . ' ' . $action);
+          }
 
         } else {
-            Helper::notFound();
+          Helper::notFound('no controller ' . $controller);
         }
+
+
+      } else {
+
+        // *
+        // if controller no admin
+        // *
+
+        $controller = 'app\\controllers\\' . $this->route['controller'] . 'Controller';
+
+        if (class_exists($controller)) {
+
+          // модель
+          $model = 'app\\models\\' . $this->route['controller'] . 'Model';
+          if (class_exists($model)) {
+            $modelObject = new $model($this->route);
+
+            // unset optimize
+            unset($model);
+
+          } else {
+            $modelObject = null;
+          }
+
+
+          $ControllerObject = new $controller($modelObject, $this->route);
+          $action = Helper::lowerCamelCase($this->route['action']) . 'Action';
+
+          // unset optimize
+          //unset($controller);
+
+          if (method_exists($ControllerObject, $action)) {
+
+            $ControllerObject->$action($modelObject, $this->route);
+            $ControllerObject->getView(APP);
+
+            // unset optimize
+            unset($modelObject);
+            unset($ControllerObject);
+            //unset($action);
+
+          } else {
+            Helper::notFound('no method in ' . $controller . ' ' . $action);
+          }
+
+        } else {
+          Helper::notFound('no controller ' . $controller);
+        }
+
+      }
+
+
+    } else {
+      Helper::notFound();
     }
+  }
 
 
-    /**
-     * @param $url
-     * @return bool
-     */
-    protected function getRoute($url)
-    {
+  /**
+   * @param $url
+   * @return bool
+   */
+  protected function getRoute($url)
+  {
 
-        foreach ($this->routes as $pattern => $route) {
+    foreach ($this->routes as $pattern => $route) {
 
-            $pattern = $this->convertPattern("#^" . $pattern . "$#i");
+      $pattern = $this->convertPattern("#^" . $pattern . "$#i");
 
-            if (preg_match($pattern, $url, $matches)) {
+      if (preg_match($pattern, $url, $matches)) {
 
 
-                foreach ($matches as $k => $v) {
-                    if (is_string($k)) {
-                        $route[$k] = $v;
-                    }
-                }
+        foreach ($matches as $k => $v) {
+          if (is_string($k)) {
+            $route[$k] = $v;
+          }
+        }
 
-                if (!isset($route['action'])) {
-                    $route['action'] = 'index';
-                }
+        if (!isset($route['action'])) {
+          $route['action'] = 'index';
+        }
 
-                if (SL) {
-                    if (isset($route['language'])) {
-                        if (!in_array($route['language'], ['ua', 'ru'])) {
-                            Helper::notFound();
-                        } else {
-                            $_SESSION[LANGUAGE] = $route['language'];
-                        }
-                    } else {
-                        Helper::notFound();
-                    }
-                }
-
-                $route['controller'] = Helper::upperCamelCase($route['controller']);
-                $this->route = $route;
-                return true;
+        if (SL) {
+          if (isset($route['language'])) {
+            if (!in_array($route['language'], ['ua', 'ru'])) {
+              Helper::notFound();
+            } else {
+              $_SESSION[LANGUAGE] = $route['language'];
             }
+          } else {
+            Helper::notFound();
+          }
         }
-        return false;
+
+        $route['controller'] = Helper::upperCamelCase($route['controller']);
+        $this->route = $route;
+        return true;
+      }
     }
+    return false;
+  }
 
-    /**
-     * @return array $this->>routes
-     */
-    public function getRoutes()
-    {
-        return $this->routes;
+  /**
+   * @return array $this->>routes
+   */
+  public function getRoutes()
+  {
+    return $this->routes;
+  }
+
+
+  /**
+   * @param $pattern
+   * @return string|string[]|null
+   */
+  protected function convertPattern($pattern)
+  {
+
+    if (strpos($pattern, '(') === false) {
+      return $pattern;
     }
-
-
-    /**
-     * @param $pattern
-     * @return string|string[]|null
-     */
-    protected function convertPattern($pattern)
-    {
-
-        if (strpos($pattern, '(') === false) {
-            return $pattern;
-        }
 
 //        return preg_replace_callback("#\((\w+):(\w+)\)#", ['self', 'replacePattern'], $pattern);
-        return preg_replace_callback("#\((\w+):(\w+)\)#", [$this, 'replacePattern'], $pattern);
+    return preg_replace_callback("#\((\w+):(\w+)\)#", [$this, 'replacePattern'], $pattern);
+  }
+
+  /**
+   * @param $matches
+   * @return string
+   */
+  protected function replacePattern($matches)
+  {
+    return '(?<' . $matches[1] . '>' . strtr($matches[2], $this->Patterns) . ')';
+    //return "(<" . $matches[1] . ">" . strtr($matches[2], $this->>Patterns) . ")";
+  }
+
+  /**
+   * [en] get remote address
+   * [uk] отримати віддалену адресу
+   * @return array|false|mixed|string
+   */
+  protected function getIp()
+  {
+    if ($_SERVER) {
+      if ($_SERVER['HTTP_X_FORWARDED_FOR'])
+        $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+      elseif ($_SERVER['HTTP_CLIENT_IP'])
+        $ip = $_SERVER['HTTP_CLIENT_IP'];
+      else
+        $ip = $_SERVER['REMOTE_ADDR'];
+    } else {
+      if (getenv('HTTP_X_FORWARDED_FOR'))
+        $ip = getenv('HTTP_X_FORWARDED_FOR');
+      elseif (getenv('HTTP_CLIENT_IP'))
+        $ip = getenv('HTTP_CLIENT_IP');
+      else
+        $ip = getenv('REMOTE_ADDR');
     }
 
-    /**
-     * @param $matches
-     * @return string
-     */
-    protected function replacePattern($matches)
-    {
-        return '(?<' . $matches[1] . '>' . strtr($matches[2], $this->Patterns) . ')';
-        //return "(<" . $matches[1] . ">" . strtr($matches[2], $this->>Patterns) . ")";
-    }
-
-    /**
-     * [en] get remote address
-     * [uk] отримати віддалену адресу
-     * @return array|false|mixed|string
-     */
-    protected function getIp()
-    {
-        if ($_SERVER) {
-            if ($_SERVER['HTTP_X_FORWARDED_FOR'])
-                $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
-            elseif ($_SERVER['HTTP_CLIENT_IP'])
-                $ip = $_SERVER['HTTP_CLIENT_IP'];
-            else
-                $ip = $_SERVER['REMOTE_ADDR'];
-        } else {
-            if (getenv('HTTP_X_FORWARDED_FOR'))
-                $ip = getenv('HTTP_X_FORWARDED_FOR');
-            elseif (getenv('HTTP_CLIENT_IP'))
-                $ip = getenv('HTTP_CLIENT_IP');
-            else
-                $ip = getenv('REMOTE_ADDR');
-        }
-
-        return $ip;
-    }
+    return $ip;
+  }
 
 
 }

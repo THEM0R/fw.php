@@ -1,5 +1,7 @@
 <?php
 
+
+
 function msg($type, $message)
 {
 

@@ -3,135 +3,152 @@
 use engine\Engine;
 use module\Helper;
 
+use core\Router;
+
 class View
 {
 
-    private $engine;
+  private $engine;
 
-    public $meta = [];
+  public $meta = [];
 
-    public $controller;
+  public $controller;
 
-    public $script = [];
+  public $script = [];
 
-    /*
-     * @array $route
-     * текущий маршрут
-     */
-    public $route = [];
+  /*
+   * @array $route
+   * текущий маршрут
+   */
+  public $route = [];
 
-    /*
-     * @var $view
-     * текущий вид
-     */
-    public $view;
+  /*
+   * @var $view
+   * текущий вид
+   */
+  public $view;
 
-    /*
-     * @var $templates
-     * текущий шаблон
-     */
-    public $theme;
-
-    public function __construct($route, $theme = null, $view = null, $meta = [])
-    {
-
-        $this->route = $route;
-        $this->controller = Helper::lowerCamelCase($route['controller']);
-        $this->theme = $theme ?: THEME;
-        $this->view = $view;
-        //$this->script       = helper::$config['script'];
-        $this->meta = $meta;
-        // code
-
-        $this->engine = new Engine();
-
-        //pr1($this->engine->language);
+  /*
+   * @var $templates
+   * текущий шаблон
+   */
+  public $theme;
 
 
-        // unset optimize
-        unset($route);
-        unset($theme);
-        unset($view);
-        unset($meta);
+  public $routes = [];
 
+  function route($name = null){
+
+    if(!empty($name)){
+
+    }
+    echo 'route';
+  }
+
+  public function __construct($route, $theme = null, $view = null, $meta = [])
+  {
+
+    $routes = new Router();
+
+    $this->routes = $routes->getRoutes();
+
+    $this->route = $route;
+    $this->controller = Helper::lowerCamelCase($route['controller']);
+    $this->theme = $theme ?: THEME;
+    $this->view = $view;
+    //$this->script       = helper::$config['script'];
+    $this->meta = $meta;
+    // code
+
+    $this->engine = new Engine();
+
+    //pr1($this->engine->language);
+
+
+    // unset optimize
+    unset($route);
+    unset($theme);
+    unset($view);
+    unset($meta);
+
+  }
+
+
+  public function rendering($directory, $vars)
+  {
+
+    $script = $this->script;
+    $all = compact('script');
+    $vars = array_merge($all, $vars);
+
+    // unset optimize
+    unset($script);
+    unset($all);
+
+    if ($this->view == false) {
+      if (RELEASE) {
+        Helper::NotFound();
+      } else {
+        Helper::NotFound(msg(0, 1));
+      }
     }
 
 
-    public function rendering($directory, $vars)
-    {
+    if (is_array($vars)) extract($vars);
 
-        $script = $this->script;
-        $all = compact('script');
-        $vars = array_merge($all, $vars);
+    // unset optimize
+    unset($vars);
 
-        // unset optimize
-        unset($script);
-        unset($all);
+    $view = $directory . '/views/' . $this->theme . '/' . Helper::lowerCamelCase($this->view) . '.html';
 
-        if ($this->view == false) {
-            if (RELEASE) {
-                Helper::NotFound();
-            } else {
-                Helper::NotFound(msg(0, 1));
-            }
+    ob_start(); // старт буферизации
+
+    if (is_file($view)) {
+      require $view;
+    } else {
+      if (RELEASE) {
+        Helper::NotFound();
+      } else {
+        if (strpos($view, '/') !== false) {
+          $view = ' ' . substr($view, strpos($view, '/'));
         }
+        Helper::NotFound(msg(0, 2) . $view);
+      }
 
+    }
 
-        if (is_array($vars)) extract($vars);
+    // unset optimize
+    unset($view);
 
-        // unset optimize
-        unset($vars);
+    $content = ob_get_clean();
 
-        $view = $directory . '/views/' . $this->theme . '/' . Helper::lowerCamelCase($this->view) . '.html';
+    if ($this->theme !== false) {
 
-        ob_start(); // старт буферизации
+      $theme = $directory . '/views/' . $this->theme . '/index.html';
 
-        if (is_file($view)) {
-            require $view;
+      if (is_file($theme)) {
+        require $theme;
+      } else {
+
+        if (RELEASE) {
+          Helper::NotFound();
         } else {
-            if (RELEASE) {
-                Helper::NotFound();
-            } else {
-                if (strpos($view, '/') !== false) {
-                    $view = ' ' . substr($view, strpos($view, '/'));
-                }
-                Helper::NotFound(msg(0, 2) . $view);
-            }
-
+          if (strpos($theme, '/') !== false) {
+            $theme = ' ' . substr($theme, strpos($theme, '/'));
+          }
+          Helper::NotFound(msg(0, 2) . $theme);
         }
+      }
+      // unset optimize
+      unset($theme);
 
-        // unset optimize
-        unset($view);
-
-        $content = ob_get_clean();
-
-        if ($this->theme !== false) {
-
-            $theme = $directory . '/views/' . $this->theme . '/index.html';
-
-            if (is_file($theme)) {
-                require $theme;
-            } else {
-
-                if (RELEASE) {
-                    Helper::NotFound();
-                } else {
-                    if (strpos($theme, '/') !== false) {
-                        $theme = ' ' . substr($theme, strpos($theme, '/'));
-                    }
-                    Helper::NotFound(msg(0, 2) . $theme);
-                }
-            }
-            // unset optimize
-            unset($theme);
-
-        } else {
-            Helper::NotFound('theme === false');
-        }
+    } else {
+      Helper::NotFound('theme === false');
     }
+  }
 
-    public function require_pro($file)
-    {
-        if (is_file($file)) require($file);
-    }
+  public function require_pro($file)
+  {
+    if (is_file($file)) require($file);
+  }
 }
