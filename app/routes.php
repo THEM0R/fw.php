@@ -3,7 +3,7 @@
 //Router->post('(post:all)/(old:all)', 'Main:test');
 
 /* category */
-$Router->get('(category:str)', 'category',false,'category');
+$Router->get('(category:str)', 'category','category');
 
 $Router->get('(category:all)/(page:int)', 'category', false,'category_page');
 
