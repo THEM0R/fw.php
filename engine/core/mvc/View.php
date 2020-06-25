@@ -37,13 +37,7 @@ class View
 
   public $routes = [];
 
-  function route($name = null){
 
-    if(!empty($name)){
-
-    }
-    echo 'route';
-  }
 
   public function __construct($route, $theme = null, $view = null, $meta = [])
   {

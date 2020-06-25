@@ -1,6 +1,5 @@
 <?php
-// functions
-require_once __DIR__ . '/module/function.php';
+
 // autoload
 require_once __DIR__ . '/../vendor/autoload.php';
 // ini

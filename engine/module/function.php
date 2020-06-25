@@ -1,11 +1,9 @@
 <?php
 
-
-
 function msg($type, $message)
 {
 
-  $language = require CONF.'ini/language.php';
+  $language = require CONF . 'ini/language.php';
 
   $msg = '';
 
@@ -23,13 +21,13 @@ function msg($type, $message)
 
 function pr6($arr = null)
 {
-    echo '<pre>' . print_r($arr, true) . '</pre>';
+  echo '<pre>' . print_r($arr, true) . '</pre>';
 }
 
 function pr7($arr = null)
 {
-    echo '<pre>' . print_r($arr, true) . '</pre>';
-    exit;
+  echo '<pre>' . print_r($arr, true) . '</pre>';
+  exit;
 }
 
 function pr1($arr = null)
@@ -49,29 +47,62 @@ function pr($arr = null)
 
 function pr2($arr = null)
 {
-    echo '<pre>' , var_dump($arr) , '</pre>';
+  echo '<pre>', var_dump($arr), '</pre>';
 }
 
 function pr3($arr = null)
 {
-    echo '<pre>' , var_dump($arr) , '</pre>';
-    exit;
+  echo '<pre>', var_dump($arr), '</pre>';
+  exit;
 }
 
-function varName( $v = null ) {
+function varName($v = null)
+{
 
-    if(!$v) return false;
+  if (!$v) return false;
 
-    $trace = debug_backtrace();
-
-
-
-    $vLine = file( __FILE__ );
-    $fLine = $vLine[ $trace[0]['line'] - 1 ];
+  $trace = debug_backtrace();
 
 
-    preg_match( "#\\$(\w+)#", $fLine, $match );
+  $vLine = file(__FILE__);
+  $fLine = $vLine[$trace[0]['line'] - 1];
 
-    pr1($match);
+
+  preg_match("#\\$(\w+)#", $fLine, $match);
+
+  pr1($match);
 }
+
+
+
+function Route($name = null)
+{
+  Global $Router;
+
+  $routes = $Router->getRoutes();
+
+  pr1($routes);
+
+  if (!empty($name)) {
+
+    foreach ($routes as $k => $v){
+      if(isset($v['name']) and $v['name'] != ''){
+        pr1($k);
+      }
+    }
+
+  }
+  return false;
+}
+
+//function route($name)
+//{
+//
+//
+//  $Router = new core\Router();
+//  $routes = $Router->getRoutes();
+//
+//  pr1($routes);
+//  getRoute($name, $routes);
+//}
 
