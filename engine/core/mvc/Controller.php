@@ -126,13 +126,15 @@ abstract class Controller
         return compact($render);
     }
 
-    public function renderTest($render)
+    public function renderTest($render, $_ = null)
 {
 
-    $arr1 = $this->route['controller'] . 'controller';
-    $aps = new \engine\admin\controllers\MainController(false, $this->route);
+  pr1($_);
 
-    $aps->indexAction(false, $this->route);
+    $arr1 = $this->route['controller'] . 'controller';
+//    $aps = new \engine\admin\controllers\MainController(false, $this->route);
+//
+//    $aps->indexAction(false, $this->route);
 
     pr($render);
     pr1($this->route);

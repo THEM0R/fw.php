@@ -20,8 +20,8 @@ class MainController extends AppController
         $admin = 'SlavikMor';
         $admin2 = 'SlavikMor2';
 
-        pr1($this->c($admin));
-        $this->renderTest('admin,admin2');
+        //pr1($this->c($admin));
+        $this->renderTest($admin,$admin2);
 
         $this->render(compact('admin'));
     }
