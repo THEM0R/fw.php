@@ -186,11 +186,7 @@ class Router
         // if controller no admin
         // *
 
-        $controller = "app\\base\\controllers\\" . $this->route['controller'] . 'Controller';
-
-        pr($controller);
-
-        pr1(class_exists($controller));
+        $controller = BASE_CONTROLLER_LINK . $this->route['controller'] . 'Controller';
 
         if (class_exists($controller)) {
 
@@ -216,7 +212,7 @@ class Router
           if (method_exists($ControllerObject, $action)) {
 
             $ControllerObject->$action($modelObject, $this->route);
-            $ControllerObject->getView(APP);
+            $ControllerObject->getView(BASE_DIR);
 
             // unset optimize
             unset($modelObject);

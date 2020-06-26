@@ -65,7 +65,7 @@ abstract class Controller
     }
 
 
-    public function getView($directory = APP)
+    public function getView($directory = BASE_DIR)
     {
 
         //pr1($test);

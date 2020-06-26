@@ -54,7 +54,7 @@ class View
     $this->meta = $meta;
     // code
 
-    $this->engine = new Engine();
+//    /$this->engine = new Engine();
 
     //pr1($this->engine->language);
 
