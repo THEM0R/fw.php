@@ -16,7 +16,7 @@
             "engine\\": "engine/",
             "core\\": "engine/core/",
             "module\\": "engine/module/",
-            "mvc\\": "engine/core/mvc/"
+            "mvc\\": "engine/mvc/"
         }
     }
 }

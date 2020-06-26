@@ -1,6 +1,6 @@
 <?php
 
-namespace core;
+namespace router;
 
 use module\Helper;
 use module\Request;

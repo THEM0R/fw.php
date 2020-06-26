@@ -3,7 +3,7 @@
 use engine\Engine;
 use module\Helper;
 
-use core\Router;
+use router\Router;
 
 class View
 {
