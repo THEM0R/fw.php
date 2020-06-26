@@ -1,6 +1,6 @@
 <?php
 
-namespace app\controllers;
+namespace base\controllers;
 
 use engine\Helper;
 

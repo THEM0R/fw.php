@@ -1,9 +1,8 @@
 <?php
 
-namespace engine\admin\controllers;
+namespace admin\controllers;
 
-use app\controllers\AppController;
-
+use base\controllers\AppController;
 
 class MainController extends AppController
 {

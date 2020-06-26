@@ -13,6 +13,8 @@ class Router
   {
     //pr1(SL);
     $this->url = Request::getUrl();
+
+    require_once ENGINE_DIR . '/config.php';
   }
 
   private $url;
@@ -136,12 +138,12 @@ class Router
 
         $this->route['controller'] = 'Main';
 
-        $controller = 'engine\\admin\\controllers\\' . $this->route['controller'] . 'Controller';
+        $controller = ADMIN_CONTROLLER_LINK . $this->route['controller'] . 'Controller';
 
         if (class_exists($controller)) {
 
           // модель
-          $model = 'engine\\admin\\models\\' . $this->route['controller'] . 'Model';
+          $model = ADMIN_MODEL_LINK . $this->route['controller'] . 'Model';
           if (class_exists($model)) {
             $modelObject = new $model($this->route);
 
@@ -162,7 +164,7 @@ class Router
           if (method_exists($ControllerObject, $action)) {
 
             $ControllerObject->$action($modelObject, $this->route);
-            $ControllerObject->getView(ADMIN);
+            $ControllerObject->getView(ADMIN_DIR);
 
             // unset optimize
             unset($modelObject);
@@ -184,12 +186,16 @@ class Router
         // if controller no admin
         // *
 
-        $controller = 'app\\controllers\\' . $this->route['controller'] . 'Controller';
+        $controller = "app\\base\\controllers\\" . $this->route['controller'] . 'Controller';
+
+        pr($controller);
+
+        pr1(class_exists($controller));
 
         if (class_exists($controller)) {
 
           // модель
-          $model = 'app\\models\\' . $this->route['controller'] . 'Model';
+          $model = BASE_MODEL_LINK . $this->route['controller'] . 'Model';
           if (class_exists($model)) {
             $modelObject = new $model($this->route);
 

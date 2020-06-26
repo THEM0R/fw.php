@@ -12,9 +12,12 @@
     },
     "autoload": {
         "psr-4": {
+
             "app\\": "app/",
+            "admin\\": "app/admin/",
+            "base\\": "app/base/",
             "engine\\": "engine/",
-            "core\\": "engine/core/",
+            "router\\": "engine/router/",
             "module\\": "engine/module/",
             "mvc\\": "engine/mvc/"
         }
