@@ -73,4 +73,20 @@ class Language
         }
     }
 
+    public static function searchLang($route){
+
+      if (self::$sl) {
+        if (isset($route['language'])) {
+          if (!in_array($route['language'], ['ua', 'ru'])) {
+            Helper::notFound();
+          } else {
+            $_SESSION[LANGUAGE] = $route['language'];
+          }
+        } else {
+          Helper::notFound();
+        }
+      }
+
+    }
+
 }

@@ -107,7 +107,7 @@ class Router
     } // is_string
   }
 
-  private function getMvc($route,$controller_link, $model_link, $directory){
+  private function getMvc($route, $controller_link, $model_link, $directory){
 
     $controller = $controller_link . $route['controller'] . 'Controller';
 
@@ -223,17 +223,7 @@ class Router
           $route['action'] = 'index';
         }
 
-        if (SL) {
-          if (isset($route['language'])) {
-            if (!in_array($route['language'], ['ua', 'ru'])) {
-              Helper::notFound();
-            } else {
-              $_SESSION[LANGUAGE] = $route['language'];
-            }
-          } else {
-            Helper::notFound();
-          }
-        }
+        Language::searchLang($route);
 
         $route['controller'] = Helper::upperCamelCase($route['controller']);
         $this->route = $route;
