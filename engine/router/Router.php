@@ -69,6 +69,7 @@ class Router
     return $this;
   }
 
+
   /**
    * @param $pattern
    * @param $route
@@ -123,8 +124,10 @@ class Router
 
     if ($this->getRoute($this->url)) {
 
+      // *
+      // route add method
+      // *
       $this->route = Request::addMethod($this->route);
-
 
       if ($this->route['controller'] === 'Admin') {
 
