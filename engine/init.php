@@ -40,7 +40,7 @@ define('HTTP_ACCEPT_LANGUAGE', $_SERVER['HTTP_ACCEPT_LANGUAGE']);
 
 // view
 define('RELEASE', 0);
-// dir
+// directories
 define('WWW_DIR', dirname(__DIR__));
 // APP
 define('APP_DIR', WWW_DIR . '/app');
@@ -68,6 +68,11 @@ use Symfony\Component\Debug\Debug;
 
 Debug::enable();
 // Debug
+
+// twig
+//Twig_Autolader::register();
+//$loader = new Twig_Loader_Filesystem('templates');
+// twig
 
 
 

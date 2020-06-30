@@ -11,9 +11,7 @@ class Router
 
   public function __construct()
   {
-    //pr1(SL);
     $this->url = Request::getUrl();
-
     require_once ENGINE_DIR . '/config.php';
   }
 
@@ -33,10 +31,10 @@ class Router
   protected $route = [];
 
   protected $Patterns = [
-    'int' => '[0-9]+',
-    'str' => '[a-zA-Z\.\-_%]+',
-    'all' => '[a-zA-Z0-9\.\-_%]+',
-    'get' => '[a-zA-Z0-9\.\-_%=&?]*'
+      'int' => '[0-9]+',
+      'str' => '[a-zA-Z\.\-_%]+',
+      'all' => '[a-zA-Z0-9\.\-_%]+',
+      'get' => '[a-zA-Z0-9\.\-_%=&?]*'
   ];
 
 
@@ -67,9 +65,6 @@ class Router
 
   public function name($name = '')
   {
-
-    //pr1($this->routeName);
-
     $this->routes[$this->routeName]['name'] = $name;
     return $this;
   }
@@ -91,9 +86,7 @@ class Router
       if (strpos($route, ':') === false) {
 
         $this->routes[$pattern] = [
-          'controller' => $route,
-          'view' => $view,
-          'method' => ['name' => $method]
+            'controller' => $route
         ];
 
       } else {
@@ -101,12 +94,15 @@ class Router
         $route = explode(':', $route);
 
         $this->routes[$pattern] = [
-          'controller' => $route[0],
-          'action' => $route[1],
-          'view' => $view,
-          'method' => ['name' => $method]
+            'controller' => $route[0],
+            'action' => $route[1]
         ];
       }
+
+      $this->routes[$pattern] += [
+          'view' => $view,
+          'method' => ['name' => $method]
+      ];
     } // is_string
   }
 
