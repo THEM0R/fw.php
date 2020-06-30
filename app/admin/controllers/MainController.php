@@ -2,8 +2,6 @@
 
 namespace admin\controllers;
 
-use base\controllers\AppController;
-
 class MainController extends AppController
 {
 
@@ -24,6 +22,18 @@ class MainController extends AppController
 
         $this->render(compact('admin'));
     }
+
+  public function catAction($model, $route)
+  {
+
+    $admin = 'SlavikMor';
+    $admin2 = 'SlavikMor2';
+
+    //pr1($this->c($admin));
+    $this->renderTest($admin,$admin2);
+
+    $this->render(compact('admin'));
+  }
 
 
 }

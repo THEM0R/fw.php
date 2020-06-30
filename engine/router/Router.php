@@ -107,6 +107,51 @@ class Router
     } // is_string
   }
 
+  private function getMvc($route,$controller_link, $model_link, $directory){
+
+    $controller = $controller_link . $route['controller'] . 'Controller';
+
+    if (class_exists($controller)) {
+
+      // модель
+      $model = $model_link . $route['controller'] . 'Model';
+      if (class_exists($model)) {
+        $modelObject = new $model($route);
+
+        // unset optimize
+        unset($model);
+
+      } else {
+        $modelObject = null;
+      }
+
+
+      $ControllerObject = new $controller($modelObject, $route);
+      $action = Helper::lowerCamelCase($route['action']) . 'Action';
+
+      // unset optimize
+      //unset($controller);
+
+      if (method_exists($ControllerObject, $action)) {
+
+        $ControllerObject->$action($modelObject, $route);
+        $ControllerObject->getView($directory);
+
+        // unset optimize-
+        unset($modelObject);
+        unset($ControllerObject);
+        //unset($action);
+
+      } else {
+        Helper::notFound('no method in ' . $controller . ' ' . $action);
+      }
+
+    } else {
+      Helper::notFound('no controller ' . $controller);
+    }
+
+  }
+
 
   /**
    * @START PROGRAM
@@ -134,50 +179,9 @@ class Router
         // *
         // if controller admin
         // *
-
         $this->route['controller'] = 'Main';
 
-        $controller = ADMIN_CONTROLLER_LINK . $this->route['controller'] . 'Controller';
-
-        if (class_exists($controller)) {
-
-          // модель
-          $model = ADMIN_MODEL_LINK . $this->route['controller'] . 'Model';
-          if (class_exists($model)) {
-            $modelObject = new $model($this->route);
-
-            // unset optimize
-            unset($model);
-
-          } else {
-            $modelObject = null;
-          }
-
-
-          $ControllerObject = new $controller($modelObject, $this->route);
-          $action = Helper::lowerCamelCase($this->route['action']) . 'Action';
-
-          // unset optimize
-          //unset($controller);
-
-          if (method_exists($ControllerObject, $action)) {
-
-            $ControllerObject->$action($modelObject, $this->route);
-            $ControllerObject->getView(ADMIN_DIR);
-
-            // unset optimize
-            unset($modelObject);
-            unset($ControllerObject);
-            //unset($action);
-
-          } else {
-            Helper::notFound('no method in ' . $controller . ' ' . $action);
-          }
-
-        } else {
-          Helper::notFound('no controller ' . $controller);
-        }
-
+        $this->getMvc($this->route,ADMIN_CONTROLLER_LINK,ADMIN_MODEL_LINK,ADMIN_DIR);
 
       } else {
 
@@ -185,47 +189,7 @@ class Router
         // if controller no admin
         // *
 
-        $controller = BASE_CONTROLLER_LINK . $this->route['controller'] . 'Controller';
-
-        if (class_exists($controller)) {
-
-          // модель
-          $model = BASE_MODEL_LINK . $this->route['controller'] . 'Model';
-          if (class_exists($model)) {
-            $modelObject = new $model($this->route);
-
-            // unset optimize
-            unset($model);
-
-          } else {
-            $modelObject = null;
-          }
-
-
-          $ControllerObject = new $controller($modelObject, $this->route);
-          $action = Helper::lowerCamelCase($this->route['action']) . 'Action';
-
-          // unset optimize
-          //unset($controller);
-
-          if (method_exists($ControllerObject, $action)) {
-
-            $ControllerObject->$action($modelObject, $this->route);
-            $ControllerObject->getView(BASE_DIR);
-
-            // unset optimize
-            unset($modelObject);
-            unset($ControllerObject);
-            //unset($action);
-
-          } else {
-            Helper::notFound('no method in ' . $controller . ' ' . $action);
-          }
-
-        } else {
-          Helper::notFound('no controller ' . $controller);
-        }
-
+        $this->getMvc($this->route,BASE_CONTROLLER_LINK,BASE_MODEL_LINK,BASE_DIR);
       }
 
 
