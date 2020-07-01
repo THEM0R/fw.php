@@ -159,12 +159,6 @@ class Router
   public function Run()
   {
 
-//        pr1($this->url);
-//
-//        if($this->url === 'admin'){
-//            Helper::redirect(DOMEN . '/admin');
-//        }
-
     Language::langRedirect($this->url);
 
     if ($this->getRoute($this->url)) {
@@ -175,24 +169,18 @@ class Router
       $this->route = Request::addMethod($this->route);
 
       if ($this->route['controller'] === 'Admin') {
-
         // *
         // if controller admin
         // *
         $this->route['controller'] = 'Main';
-
         $this->getMvc($this->route,ADMIN_CONTROLLER_LINK,ADMIN_MODEL_LINK,ADMIN_DIR);
 
       } else {
-
         // *
         // if controller no admin
         // *
-
         $this->getMvc($this->route,BASE_CONTROLLER_LINK,BASE_MODEL_LINK,BASE_DIR);
       }
-
-
     } else {
       Helper::notFound();
     }

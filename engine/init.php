@@ -68,7 +68,6 @@ use Symfony\Component\Debug\Debug;
 
 Debug::enable();
 // Debug
-
 // twig
 //Twig_Autolader::register();
 //$loader = new Twig_Loader_Filesystem('templates');
